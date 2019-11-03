@@ -1,6 +1,6 @@
-import { observable, action } from 'mobx';
+import { observable, action } from 'mobx'
 import axios from 'axios'
-
+import * as urls from '@constant/urls'
 
 class User {
 	@observable
@@ -10,8 +10,11 @@ class User {
 
 	@action
 	async register(user) {
-		const r = await axios.get('')
+		const r = await axios.post(urls.API_USER_REGISTER, user)
+		if ( r && r.status === 200) {
+			return r.data
+		}
 	}
 }
 
-export default new User();
+export default new User()
