@@ -1,0 +1,32 @@
+**/.idea
+**/.vscode
+**/node_modules
+**/yarn.lock
+**/build
+
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/lerna-debug.log*
+
+# TypeScript v1 declaration files
+**/typings/
+
+# TypeScript cache
+**/*.tsbuildinfo
+
+# Optional npm cache directory
+**/.npm
+
+# Optional eslint cache
+**/.eslintcache
+
+# Yarn Integrity file
+**/.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+**/.cache
