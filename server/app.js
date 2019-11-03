@@ -36,16 +36,28 @@ function callProc(sql, params, res, cb) {
 	})
 }
 
-// 添加申请加梯请求
+
+/**
+ * 取所有用户信息
+ */
+app.get('/UserList', async function (req, res) {
+	let sql = `CALL PROC_USER_LIST`
+
+	callProc(sql, {}, res, (r) => {
+		res.status(200).json({code: 200, data: r})
+	})
+})
+
+/**
+ * 注册接口
+ */
 app.post('/Register', async function (req, res) {
-	let sql = `CALL PROC_REGISTER(?)`
+	let sql = `CALL PROC_USER_REGISTER(?)`
 	let params = req.body
 
-	console.log(params)
-
-	// callProc(sql, params, res, (r) => {
-	// 	res.status(200).json({code: 200, data: r})
-	// })
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r})
+	})
 })
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
