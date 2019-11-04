@@ -1,22 +1,22 @@
 .g-login {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
+  height: 100%;
+  position: fixed;
+  width: 100%;
 
   .m-tri {
     width: 100%;
     flex: 1;
     background-color: #3d74aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .m-title {
-      margin: 10% auto 0;
-      min-height: 340px;
       writing-mode: vertical-rl;
       letter-spacing: 10px;
       font-size: 48px;
-      font-weight: 500;
       color: #ffffff;
       font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;;
     }
@@ -24,7 +24,6 @@
 
   .m-login {
     background: #ffffff;
-    width: 100vw;
     padding: 10px 20px;
   }
 

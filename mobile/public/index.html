@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
 <!--    引入 FastClick 并且设置 html meta (更多参考 #576)-->
 <!--    引入 Promise 的 fallback 支持 (部分安卓手机不支持 Promise)-->
@@ -49,4 +50,27 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+
+  <script>
+    var attachMobileSafariAddressBarHelpTip = function (target) {
+    var $target = $(target);
+    $target.tooltip({
+        title: 'Scroll up to hide Safari address bar',
+        trigger: 'manual',
+        placement: 'bottom'
+    });
+    $(window).on('resize', function () {
+        var bodyHeight = document.body.offsetHeight;
+        var windowHeight = window.innerHeight;
+        var isLandscape = Math.abs(window.orientation) === 90;
+        var showTooltip = (windowHeight < bodyHeight);
+        if(!isLandscape) return;
+        $target.tooltip(showTooltip ? 'show' : 'hide');
+    });
+}
+var ua = window.navigator.userAgent;
+if(ua.indexOf('iPhone') !== -1 && ua.indexOf('Safari') !== -1) {
+    attachMobileSafariAddressBarHelpTip('#main-nav');
+}
+  </script>
 </html>
