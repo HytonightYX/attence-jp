@@ -75,7 +75,8 @@ class Register extends React.Component {
 		})
 	}
 
-	handleOk = async () => {}
+	handleOk = async () => {
+	}
 
 	render() {
 		const {getFieldDecorator, getFieldValue} = this.props.form
@@ -178,7 +179,7 @@ class Register extends React.Component {
 								<Form.Item label="公司">
 									{getFieldDecorator('company', {
 										rules: [{required: true, message: '请选择公司！'}],
-										initialValue: "bizplus"
+										initialValue: 'bizplus'
 									})(
 										<Select size='large' placeholder='请选择公司...'>
 											{compList.map((item) => (
@@ -195,7 +196,7 @@ class Register extends React.Component {
 								<Form.Item label="部门">
 									{getFieldDecorator('dept', {
 										rules: [{required: true, message: '请选择部门！'}],
-										initialValue: "部门1"
+										initialValue: '部门1'
 									})(
 										<Select size='large' placeholder='请选择部门...'>
 											{deptList.map((item) => (
@@ -207,7 +208,7 @@ class Register extends React.Component {
 								<Form.Item label="职位">
 									{getFieldDecorator('position', {
 										rules: [{required: true, message: '请选择职位！'}],
-										initialValue: "职位1"
+										initialValue: '职位1'
 									})(
 										<Select size='large' placeholder='请选择职位...'>
 											{positionList.map((item, index) => (

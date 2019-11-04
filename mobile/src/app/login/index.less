@@ -1,13 +1,69 @@
 .g-login {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   height: 100vh;
 
-  .form-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
+  .m-tri {
+    width: 100%;
+    flex: 1;
+    background-color: #3d74aa;
+
+    .m-title {
+      margin: 10% auto 0;
+      min-height: 340px;
+      writing-mode: vertical-rl;
+      letter-spacing: 10px;
+      font-size: 48px;
+      font-weight: 500;
+      color: #ffffff;
+      font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;;
+    }
+  }
+
+  .m-login {
+    background: #ffffff;
+    width: 100vw;
+    padding: 10px 20px;
+  }
+
+  .m-login-tl {
+    font-size: 20px;
+    font-weight: 600;
+    color: #3366aa;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .date-picker {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .input-pwd {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .ant-input-lg {
+    font-size: 14px;
+  }
+
+  .steps-wrap {
+    width: 100%;
+  }
+
+  .ant-steps {
+    margin: 0 auto;
+  }
+
+  .ant-divider {
+    margin: 0;
+  }
+
+  .no-bottom {
+    margin-bottom: 0;
   }
 }
+
