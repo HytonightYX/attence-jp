@@ -1,4 +1,4 @@
-var mode = process.env.REACT_APP_ENV
+var mode = process.env.REACT_APP_MY_VAR
 var API_SERVER = 'http://133.167.73.231:8080'
 
 if (mode === 'development') {
