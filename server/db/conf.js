@@ -1,9 +1,9 @@
 let conf = {
-  host:     '101.37.14.191',
+  host:     '133.167.73.231',
   port:     3306,
-  database: 'attence_jp',
-  user: 		'attadmin',
-  password: 'attadmin',
+  database: 'attence',
+  user: 		'attence',
+  password: '123456',
   multipleStatements: true,
   secret: 'attadmin',
 };
