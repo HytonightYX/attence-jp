@@ -92,84 +92,76 @@ class Register extends React.Component {
 
 				{(!succ) &&
 				<div className="">
-					{/*<div className='steps-wrap'>*/}
-					{/*	<Steps progressDot current={step - 1}>*/}
-					{/*		<Step title="1"/>*/}
-					{/*		<Step title="2"/>*/}
-					{/*		<Step title="3"/>*/}
-					{/*	</Steps>*/}
-					{/*</div>*/}
-
 					<Form className="m-reg-form">
 
 						{step === 1 && (
 							<>
-								<Form.Item label="E-mail">
-									{getFieldDecorator('email', {
-										rules: [{required: true, message: '请输入email！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入email..."/>)}
-								</Form.Item>
-								<Form.Item label="生日">
-									{getFieldDecorator('birthday', {
-										rules: [{required: true, message: '请输入生日！'}],
-									})(<DatePicker size='large' className='date-picker'/>)}
-								</Form.Item>
-								<Form.Item label="密码">
-									{getFieldDecorator('pwd', {
-										rules: [{required: true, message: '请输入密码！'}],
-										initialValue: ''
-									})(<Input.Password size='large' className="input-pwd" placeholder="请输入密码..."/>)}
-								</Form.Item>
-								<Form.Item label="确认密码">
-									{getFieldDecorator('re_pwd', {
-										rules: [
-											{required: true, message: '请输入确认密码！'},
-											{
-												validator(rule, value, callback) {
-													if (!value) {
-														callback()//如果还没填写，则不进行一致性验证
-													}
-													if (value == getFieldValue('pwd')) {
-														callback()
-													} else {
-														callback('两次密码不一致')
-													}
+							<Form.Item label="E-mail">
+								{getFieldDecorator('email', {
+									rules: [{required: true, message: '请输入email！'}],
+									initialValue: ''
+								})(<Input className="input-text" placeholder="请输入email..."/>)}
+							</Form.Item>
+							<Form.Item label="生日">
+								{getFieldDecorator('birthday', {
+									rules: [{required: true, message: '请输入生日！'}],
+								})(<DatePicker size='large' className='date-picker'/>)}
+							</Form.Item>
+							<Form.Item label="密码">
+								{getFieldDecorator('pwd', {
+									rules: [{required: true, message: '请输入密码！'}],
+									initialValue: ''
+								})(<Input.Password size='large' className="input-pwd" placeholder="请输入密码..."/>)}
+							</Form.Item>
+							<Form.Item label="确认密码">
+								{getFieldDecorator('re_pwd', {
+									rules: [
+										{required: true, message: '请输入确认密码！'},
+										{
+											validator(rule, value, callback) {
+												if (!value) {
+													callback()//如果还没填写，则不进行一致性验证
+												}
+												if (value == getFieldValue('pwd')) {
+													callback()
+												} else {
+													callback('两次密码不一致')
 												}
 											}
-										],
-										initialValue: ''
-									})(<Input.Password size='large' className="input-pwd" placeholder="请输入确认密码..."/>)}
-								</Form.Item>
+										}
+									],
+									initialValue: ''
+								})(<Input.Password size='large' className="input-pwd" placeholder="请输入确认密码..."/>)}
+							</Form.Item>
 							</>
 						)}
 
 						{step === 2 && (
 							<>
-								<Form.Item label="姓名">
-									{getFieldDecorator('name', {
-										rules: [{required: true, message: '请输入姓名！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入姓名..."/>)}
-								</Form.Item>
-								<Form.Item label="手机">
-									{getFieldDecorator('phone', {
-										rules: [{required: true, message: '请输入手机号码！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入手机号码..."/>)}
-								</Form.Item>
-								<Form.Item label="邮政编码">
-									{getFieldDecorator('postcode', {
-										rules: [{required: true, message: '请输入邮政编码！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入邮政编码..."/>)}
-								</Form.Item>
-								<Form.Item label="居住地址">
-									{getFieldDecorator('addr', {
-										rules: [{required: true, message: '请输入居住地址！'}],
-										initialValue: ''
-									})(<TextArea rows={2} placeholder="请输入居住地址..."/>)}
-								</Form.Item>
+							<Form.Item label="姓名">
+								{getFieldDecorator('name', {
+									rules: [{required: true, message: '请输入姓名！'}],
+									initialValue: ''
+								})(<Input className="input-text" placeholder="请输入姓名..."/>)}
+							</Form.Item>
+							<Form.Item label="手机">
+								{getFieldDecorator('phone', {
+									rules: [{required: true, message: '请输入手机号码！'}],
+									initialValue: ''
+								})(<Input className="input-text" placeholder="请输入手机号码..."/>)}
+							</Form.Item>
+							<Form.Item label="邮政编码">
+								{getFieldDecorator('postcode', {
+									rules: [{required: true, message: '请输入邮政编码！'}],
+									initialValue: ''
+								})(<Input className="input-text" placeholder="请输入邮政编码..."/>)}
+							</Form.Item>
+							<Form.Item label="居住地址">
+								{getFieldDecorator('addr', {
+									rules: [{required: true, message: '请输入居住地址！'}],
+									initialValue: ''
+								})(<TextArea rows={2} placeholder="请输入居住地址..."/>)}
+							</Form.Item>
 							</>
 						)}
 
@@ -221,25 +213,13 @@ class Register extends React.Component {
 
 						<Form.Item>
 							{step < totStep && (
-								<Button
-									type="primary"
-									className="input-btn"
-									htmlType="submit"
-									onClick={this.toNextStep}
-									block
-								>
+								<Button type="primary" className="input-btn" htmlType="submit" onClick={this.toNextStep} block >
 									下一步
 								</Button>
 							)}
 
 							{step === totStep && (
-								<Button
-									type="primary"
-									className="input-btn"
-									htmlType="submit"
-									onClick={this.doSubmit}
-									block
-								>
+								<Button type="primary" className="input-btn" htmlType="submit" onClick={this.doSubmit} block >
 									提 交
 								</Button>
 							)}
@@ -255,12 +235,9 @@ class Register extends React.Component {
 					/>
 				</div>}
 
-				<Modal
-					visible={visible}
-					onOk={this.handleOk}
-					confirmLoading={loading}
-					onCancel={this.handleCancel}
-				><p>确认提交申请?</p></Modal>
+				<Modal visible={visible} onOk={this.handleOk} confirmLoading={loading} onCancel={this.handleCancel}>
+					<p>确认提交申请?</p>
+				</Modal>
 
 			</div>
 		)
