@@ -1,11 +1,12 @@
 import React from 'react'
-import { Form, Menu, Icon, Switch, Modal, Result, Button, Input, DatePicker, Steps, message } from 'antd'
+import { Form, Menu, Icon, Switch, Modal, Result, Button, Input, DatePicker, Steps, message, Select } from 'antd'
 import { inject, observer } from 'mobx-react'
 import * as DT from '@util/date'
 import './index.less'
 
 const {TextArea} = Input
 const {Step} = Steps
+const {Option} = Select
 
 @inject('userStore')
 @observer
@@ -65,6 +66,7 @@ class Register extends React.Component {
 
 				this.props.userStore.register(user)
 					.then(data => {
+						console.log('data', data)
 						if (data.code === 200) {
 							message.success(data.msg, 0.5)
 						}
@@ -73,37 +75,31 @@ class Register extends React.Component {
 		})
 	}
 
-	handleOk = async () => {
-		let params = {...this.state.values}
-		params.opid = this.state.code
-		params.apdt = DT.newDateTime()
-
-		// alert(params)
-		this.setState({loading: true})
-		let r = await this.action.addApply(params)
-		if (r && r.code === 200) {
-			this.setState({loading: false, succ: true, visible: false})
-		}
-	}
+	handleOk = async () => {}
 
 	render() {
 		const {getFieldDecorator, getFieldValue} = this.props.form
 		const {succ, visible, loading, step} = this.state
 		const totStep = 3
+		const compList = ['bizplus']
+		const deptList = ['部门1', '部门2', '部门3']
+		const positionList = ['职位1', '职位2', '职位3']
 
 		return (
 			<div className='g-reg'>
 				<div className="m-reg-tl">用户注册</div>
-				{/*<div className='steps-wrap'>*/}
-				{/*	<Steps progressDot current={step - 1}>*/}
-				{/*		<Step title="1"/>*/}
-				{/*		<Step title="2"/>*/}
-				{/*		<Step title="3"/>*/}
-				{/*	</Steps>*/}
-				{/*</div>*/}
+
 
 				{(!succ) &&
-				<div className="m-reg">
+				<div className="">
+					{/*<div className='steps-wrap'>*/}
+					{/*	<Steps progressDot current={step - 1}>*/}
+					{/*		<Step title="1"/>*/}
+					{/*		<Step title="2"/>*/}
+					{/*		<Step title="3"/>*/}
+					{/*	</Steps>*/}
+					{/*</div>*/}
+
 					<Form className="m-reg-form">
 
 						{step === 1 && (
@@ -181,37 +177,71 @@ class Register extends React.Component {
 							<>
 								<Form.Item label="公司">
 									{getFieldDecorator('company', {
-										rules: [{required: true, message: '请输入公司名！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入公司名..."/>)}
+										rules: [{required: true, message: '请选择公司！'}],
+										initialValue: "bizplus"
+									})(
+										<Select size='large' placeholder='请选择公司...'>
+											{compList.map((item) => (
+												<Option value={item} key={item}>{item}</Option>
+											))}
+										</Select>
+									)}
 								</Form.Item>
 								<Form.Item label="入职日期">
 									{getFieldDecorator('hiredate', {
-										rules: [{required: true, message: '请输入生日！'}],
+										rules: [{required: true, message: '请选择入职日期！'}],
 									})(<DatePicker size='large' className='date-picker'/>)}
 								</Form.Item>
 								<Form.Item label="部门">
 									{getFieldDecorator('dept', {
-										rules: [{required: true, message: '请输入部门！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入部门..."/>)}
+										rules: [{required: true, message: '请选择部门！'}],
+										initialValue: "部门1"
+									})(
+										<Select size='large' placeholder='请选择部门...'>
+											{deptList.map((item) => (
+												<Option value={item} key={item}>{item}</Option>
+											))}
+										</Select>
+									)}
 								</Form.Item>
 								<Form.Item label="职位">
 									{getFieldDecorator('position', {
-										rules: [{required: true, message: '请输入职位！'}],
-										initialValue: ''
-									})(<Input className="input-text" placeholder="请输入职位..."/>)}
+										rules: [{required: true, message: '请选择职位！'}],
+										initialValue: "职位1"
+									})(
+										<Select size='large' placeholder='请选择职位...'>
+											{positionList.map((item, index) => (
+												<Option value={item} key={item}>{item}</Option>
+											))}
+										</Select>
+									)}
 								</Form.Item>
 							</>
 						)}
 
 						<Form.Item>
 							{step < totStep && (
-								<Button type="primary" className="input-btn" htmlType="submit" onClick={this.toNextStep} block>下一步</Button>
+								<Button
+									type="primary"
+									className="input-btn"
+									htmlType="submit"
+									onClick={this.toNextStep}
+									block
+								>
+									下一步
+								</Button>
 							)}
 
 							{step === totStep && (
-								<Button type="primary" className="input-btn" htmlType="submit" onClick={this.doSubmit} block>提 交</Button>
+								<Button
+									type="primary"
+									className="input-btn"
+									htmlType="submit"
+									onClick={this.doSubmit}
+									block
+								>
+									提 交
+								</Button>
 							)}
 						</Form.Item>
 					</Form>
@@ -230,7 +260,7 @@ class Register extends React.Component {
 					onOk={this.handleOk}
 					confirmLoading={loading}
 					onCancel={this.handleCancel}
-				><p>确认提交加梯申请?</p></Modal>
+				><p>确认提交申请?</p></Modal>
 
 			</div>
 		)
