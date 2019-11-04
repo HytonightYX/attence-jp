@@ -11,7 +11,6 @@ class User {
 	@action
 	async register(user) {
 		const r = await axios.post(urls.API_USER_REGISTER, user)
-		console.log(r)
 		if ( r && r.status === 200) {
 			return r.data
 		}
