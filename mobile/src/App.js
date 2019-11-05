@@ -12,13 +12,14 @@ class App extends React.Component {
 		return (
 			<Router>
 				<Switch>
-					<Route exact path='/reg'   component={Loadable({ loader: () => import('./app/register') })} />
-					<Route exact path='/login' component={Loadable({ loader: () => import('./app/login') })} />
+					<Route exact path='/reg'   component={Loadable({ loader: () => import('./app/register')})} />
+					<Route exact path='/login' component={Loadable({ loader: () => import('./app/login') })}   />
 					<Route path='/' render={() => (
 						<div className='app-root'>
 							<NavWrapper>
 								<Switch>
-									<Route exact path='/' component={Loadable({ loader: () => import('./app/main') })}/>
+									<Route exact path='/'     component={Loadable({ loader: () => import('./app/card')})}  />
+									<Route exact path='/conf' component={Loadable({ loader: () => import('./app/conf')})}  />
 								</Switch>
 							</NavWrapper>
 						</div>
