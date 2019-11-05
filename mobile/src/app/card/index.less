@@ -1,28 +1,114 @@
-.g-main {
-  padding: 15px 20px;
+.g-card {
+    padding: 10px;
+    padding-bottom: 70px;
 
-  .m-info {
+  .m-hd {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
   }
 
-  .m-tl {
-      font-size: 16px;
-      color: #333;
-      font-weight: 600;
+  .m-hd-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .m-hd-info>span {
+  }
+
+  .m-hd-info>.m-name {
       flex: 1;
   }
 
-  .m-val {
-      font-size: 24px;
-      color: #be0000;
-      font-weight: 600;
+  .m-hd-info>.m-day {
+    font-size: 16px;
+    color: #3366cc;
+    font-weight: bold;
   }
 
-  .m-val>i {
-    font-style: normal;
-    font-size: 14px;
-    color: #333;
+  .m-time {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px;
+      font-weight: bold;
+      color: #be0000;
+
   }
+
+  .m-body {
+      border: 1px solid #e5e5e5;
+      background: #f7f7f7;
+      padding: 15px 10px 15px 50px;
+      margin-bottom: 10px;
+  }
+
+  .m-start {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .m-end {
+    position: relative;
+  }
+
+  .m-title {
+    font-size: 16px;
+  }
+
+  .m-time-s {
+      color: #108F01;
+      font-size: 24px;
+      font-family: 'Georgia';
+      padding: 5px 0 5px 20px;
+  }
+
+  .m-addr-s {
+      font-size: 14px;
+      padding: 5px 0 5px 20px;
+  }
+
+  .m-ft {
+      border: 1px solid #e5e5e5;
+      background: #f7f7f7;
+      padding: 15px;
+      margin-bottom: 20px;
+  }
+  
+  .m-rest {
+    margin-bottom: 15px;
+  }
+
+  .m-title {
+      margin-right: 10px;
+  }
+
+  .m-mark {
+    height: 20px;
+    width: 20px;
+    background: #999;
+    position: absolute;
+    border-radius: 12px;
+    left: -32px;
+    top: 2px;
+  }
+
+  .m-line {
+    width: 1px;
+    height: 100%;
+    background: #999;
+    position: absolute;
+    left: -22px;
+    top: 16px;
+  }
+
+  .m-time-s>i,.m-addr-s>i {
+      font-size: 16px;
+      color: #333;
+      margin-right: 10px;
+  }
+
+
 }
+

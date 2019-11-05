@@ -33,7 +33,7 @@ class Conf extends React.Component {
 			   	<div className="m-val">3849 <i>円</i></div>
 			  </div>
 			  <div className="m-info">
-			   	<div className="m-tl">本月请假时间</div>
+			   	<div className="m-tl">本月请假数量</div>
 			   	<div className="m-val">2 <i>D</i></div>
 			  </div>
 			  <div className="m-info">
@@ -44,6 +44,28 @@ class Conf extends React.Component {
 			   	<div className="m-tl">本月早退次数</div>
 			   	<div className="m-val">0 <i>D</i></div>
 			  </div>
+
+			  <div className="m-info">
+			   	<div className="m-tl">今年工作时间</div>
+			   	<div className="m-val">784 <i>H</i></div>
+			  </div>
+			  <div className="m-info">
+			   	<div className="m-tl">今年加班时间</div>
+			   	<div className="m-val">34 <i>H</i></div>
+			  </div>
+			  <div className="m-info">
+			   	<div className="m-tl">今年请假数量</div>
+			   	<div className="m-val">12 <i>D</i></div>
+			  </div>
+			  <div className="m-info">
+			   	<div className="m-tl">年假剩余天数</div>
+			   	<div className="m-val">12 <i>D</i></div>
+			  </div>
+			  <div className="m-info">
+			   	<div className="m-tl">年假使用天数</div>
+			   	<div className="m-val">5 <i>D</i></div>
+			  </div>
+
 			</div>
 		)
 	}
