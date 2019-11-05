@@ -1,8 +1,7 @@
 import React from 'react'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-import NavWrapper from '@component/NavWrapper'
-import login from '@app/login'
-import register from '@app/register'
+import Loadable from './component/Loadable'
+import NavWrapper from 'component/NavWrapper'
 
 class App extends React.Component {
 	constructor(props) {
@@ -13,10 +12,15 @@ class App extends React.Component {
 		return (
 			<Router>
 				<Switch>
+					<Route exact path='/reg'   component={Loadable({ loader: () => import('./app/register') })} />
+					<Route exact path='/login' component={Loadable({ loader: () => import('./app/login') })} />
 					<Route path='/' render={() => (
 						<div className='app-root'>
-							<Route exact path='/' component={login}/>
-							<Route exact path='/register' component={register}/>
+							<NavWrapper>
+								<Switch>
+									<Route exact path='/' component={Loadable({ loader: () => import('./app/main') })}/>
+								</Switch>
+							</NavWrapper>
 						</div>
 					)}/>
 				</Switch>

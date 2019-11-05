@@ -99,6 +99,11 @@ class Register extends React.Component {
 		this.setState({showDatePicker: false})
 	}
 
+	doReturn = ()=>{
+		window.location.replace(`/`);
+	}
+
+
 	render() {
 		const {getFieldDecorator, getFieldValue, setFieldsValue} = this.props.form
 		const {succ, visible, loading, step} = this.state
@@ -268,7 +273,7 @@ class Register extends React.Component {
 						title="成功提交注册申请！"
 						subTitle="请等待管理员审核"
 						extra={[
-							<Button className="input-btn" type="primary" key="console">
+							<Button className="input-btn" type="primary" key="console" onClick={this.doReturn}>
 								返回登录页面
 							</Button>,
 						]}

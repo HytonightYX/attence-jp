@@ -3,6 +3,7 @@ import { Icon, Form, Input, Button, Divider } from 'antd'
 import { Link } from 'react-router-dom'
 import './index.less'
 
+
 class Login extends React.Component {
 
 	render() {
@@ -58,7 +59,6 @@ class Login extends React.Component {
 						<Divider orientation='center'>or</Divider>
 
 						<Form.Item className='no-bottom'>
-
 							<Link to='/register'>
 								<Button
 									className="input-btn"
