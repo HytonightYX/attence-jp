@@ -1,7 +1,18 @@
 export const DATE_FORMAT  = 'YYYY/MM/DD'
 export const MONTH_FORMAT = 'YYYY/MM'
 
-
+export const navIconList = [{
+                      name:'打卡',
+                      icon:'clock-circle'
+                    },{
+                      name:'请假',
+                      icon:'frown'
+                    },{
+                      name:'月报',
+                      icon:'calendar'
+                    },{
+                      name:'设置',
+                      icon:'setting'}]
 
 export const MENU_MAIN = [{ title:'申请加梯管理', icon:'diff', path: '/appy' },
                           { title:'品牌指定管理', icon:'idcard', path: '/brad' },
