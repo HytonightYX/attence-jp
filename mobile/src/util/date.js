@@ -21,6 +21,10 @@ export let newDate = () => {
 	return moment(new Date()).format('YYYY/MM/DD')
 }
 
+export let newTime = () => {
+	return moment(new Date()).format('hh:mm:ss')
+}
+
 // '2019/06/01 16:00:09'   =>  20190601
 export let convertD2I = (date) => {
 	return parseInt(formatDate(date).split('/').join(''))

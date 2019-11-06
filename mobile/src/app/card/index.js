@@ -1,6 +1,6 @@
 import React,{ Suspense, lazy }  from 'react'
 import { inject, observer } from 'mobx-react'
-import { Icon, Form, Tag, Input, Drawer, Switch, Button, TimePicker, DatePicker  } from 'antd'
+import { Icon, Form, Tag, Input, Slider, Drawer, Switch, Button, TimePicker, DatePicker  } from 'antd'
 
 import * as DT from 'util/date'
 import './index.less'
@@ -11,7 +11,12 @@ const { TextArea } = Input;
 const format = 'HH:mm';
 const dateFormat = 'YYYY/MM/DD';
 const now = moment(new Date(), dateFormat)
-
+const marks = {
+  1: '1小时',
+  2: '2小时',
+  3: '3小时',
+  4: '4小时',
+};
 
 class Card extends React.Component {
 	constructor(props) {
@@ -21,8 +26,26 @@ class Card extends React.Component {
 			auto: false,
 			repl: false,
 			showDatePicker: false,
+			now: DT.newTime(),
+			updateRest: false,
+			updateComp: false,
+			rest: 1,
+			comp: 'Nexs株式会社有限公司',
 		}
 	}
+
+	async UNSAFE_componentWillMount() {
+    this.doTimer()
+  }
+
+  doTimer=()=>{
+  	setTimeout(()=>{
+    	this.setState({now: DT.newTime()})
+    	this.doTimer()
+    },1000)
+  }
+
+
 
 	doAuto=(checked)=>{
 		this.setState({auto:checked})
@@ -36,9 +59,26 @@ class Card extends React.Component {
 	}
 
 	openDatePicker = () => {
-		this.setState({
-			showDatePicker: true
-		})
+		this.setState({ showDatePicker: true })
+	}
+
+	doUpdateRest=()=>{
+		this.setState({ updateRest: true })
+	}
+
+	doRest=(v)=>{
+		this.setState({ updateRest: false, rest:v })
+	}
+
+	doUpdateComp=()=>{
+		this.setState({ updateComp: true })
+	}
+
+	doComp=(v)=>{
+		this.setState({ comp:v.currentTarget.value })
+	}
+	doHideComp=(v)=>{
+		this.setState({ updateComp:false })
 	}
 
 	render() {
@@ -46,10 +86,10 @@ class Card extends React.Component {
 			<div className='g-card'>
 				<div className="m-hd">
 					<div className="m-hd-info">
-						<span className="m-name">胡思源</span>
-						<span className="m-day">2019年11月05日</span>
+						<span className="m-name">xxx</span>
+						<span className="m-day">{DT.newDate()}</span>
 					</div>
-					<div className="m-time">09:38:21</div>
+					<div className="m-time">{this.state.now}</div>
 				</div>
 
 				<div className="m-body">
@@ -69,14 +109,17 @@ class Card extends React.Component {
 				</div>
 
 				<div className="m-ft">
-					<div className="m-tl m-rest">
-						<span className="m-title-s">休憩時間</span>
-						<Tag color="red">1小时</Tag>
-					</div>
 					<div className="m-tl m-company">
 						<span className="m-title-s">お客様名</span>
-						<Tag color="red">Nexs株式会社有限公司</Tag>
+						{!this.state.updateComp &&  <Tag color="red" onClick={this.doUpdateComp}>{this.state.comp}</Tag> }
+						{this.state.updateComp &&  <Input defaultValue={this.state.comp} onChange={this.doComp} onBlur={this.doHideComp}></Input> }
 					</div>
+					<div className="m-tl m-rest">
+						<span className="m-title-s">休憩時間</span>
+						{!this.state.updateRest &&  <Tag color="red" onClick={this.doUpdateRest}>{this.state.rest}小时</Tag> }
+						{this.state.updateRest &&  <Slider marks={marks} min={1} max={4} defaultValue={this.state.rest} onAfterChange={this.doRest}/> }
+					</div>
+					
 				</div>
 
 				<div className="m-fun">
