@@ -7,6 +7,11 @@ import './index.less'
 class Login extends React.Component {
 
 	render() {
+
+		console.log('REACT_APP_MY_VAR:'+process.env.REACT_APP_MY_VAR)
+		console.log('NODE_ENV:'+process.env.NODE_ENV)
+
+
 		const {getFieldDecorator} = this.props.form
 
 		return (
