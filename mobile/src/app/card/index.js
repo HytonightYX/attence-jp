@@ -1,7 +1,7 @@
 import React,{ Suspense, lazy }  from 'react'
 import { inject, observer } from 'mobx-react'
-import { Icon, Form, Tag, Input, Slider, Drawer, Switch, Button, TimePicker, DatePicker  } from 'antd'
-
+import { Icon, Form, Tag, message, Input,Skeleton, Slider, Drawer, Switch, Button, TimePicker, DatePicker  } from 'antd'
+import getPosition from 'util/pos'
 import * as DT from 'util/date'
 import './index.less'
 
@@ -31,11 +31,19 @@ class Card extends React.Component {
 			updateComp: false,
 			rest: 1,
 			comp: 'Nexs株式会社有限公司',
+			loc: null,
 		}
 	}
 
 	async UNSAFE_componentWillMount() {
     this.doTimer()
+    this.setState({ loading: true })
+    getPosition().then(ret => {
+	    this.setState({ loading: false, loc:ret  })
+    }).catch(err => {
+      message.info(err)
+      this.setState({ loading: false })
+    })
   }
 
   doTimer=()=>{
@@ -84,6 +92,8 @@ class Card extends React.Component {
 	render() {
 		return (
 			<div className='g-card'>
+				<Skeleton active loading={this.state.loading}>
+
 				<div className="m-hd">
 					<div className="m-hd-info">
 						<span className="m-name">xxx</span>
@@ -98,13 +108,13 @@ class Card extends React.Component {
 						<div className="m-line"></div>
 						<div className="m-title-s">始业打卡</div>
 						<div className="m-time-s"><Icon type="clock-circle" />09:13</div>
-						<div className="m-addr-s"><Icon type="environment" />东京新宿三丁目xxx大厦19-4-443</div>
+						<div className="m-addr-s"><Icon type="environment" />{this.state.loc}</div>
 					</div>
 					<div className="m-tl m-end">
 						<div className="m-mark"></div>
 						<div className="m-title-s">终业打卡</div>
 						<div className="m-time-s"><Icon type="clock-circle" />18:00</div>
-						<div className="m-addr-s"><Icon type="environment" />东京新宿三丁目xxx大厦19-4-443</div>
+						<div className="m-addr-s"><Icon type="environment" />{this.state.loc}</div>
 					</div>
 				</div>
 
@@ -131,6 +141,9 @@ class Card extends React.Component {
 				{!this.state.auto && <Button type="primary" size="large"  block>下班打卡</Button>}
 				{this.state.auto && <Button type="primary" size="large" disabled block>下班打卡</Button>}
 
+				
+				</Skeleton>
+					
 				<Drawer
 					className="g-drawer"
 	        title="补卡申请单"
