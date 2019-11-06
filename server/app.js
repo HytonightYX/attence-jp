@@ -62,4 +62,20 @@ app.post('/Register', async function (req, res) {
 	})
 })
 
+/**
+ * 登录接口
+ */
+app.post('/Login', async function (req, res) {
+	let sql = `CALL PROC_USER_LOGIN(?)`
+	let params = req.body
+
+	callProc(sql, params, res, (users) => {
+		if (users.length > 0) {
+			res.status(200).json({code: 200, data: users[0], msg: '登录成功'})
+		} else {
+			res.status(200).json({code: 301, data: null, msg: '用户名或密码错误'})
+		}
+	})
+})
+
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
