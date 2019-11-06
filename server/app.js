@@ -55,6 +55,8 @@ app.post('/Register', async function (req, res) {
 	let sql = `CALL PROC_USER_REGISTER(?)`
 	let params = req.body
 
+	console.log(params)
+
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '注册成功'})
 	})
