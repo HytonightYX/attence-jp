@@ -10,20 +10,11 @@ import { computed, toJS } from 'mobx'
 @observer
 class Login extends React.Component {
 
-<<<<<<< HEAD
-	render() {
 
-		console.log('REACT_APP_MY_VAR:'+process.env.REACT_APP_MY_VAR)
-		console.log('NODE_ENV:'+process.env.NODE_ENV)
-
-
-		const {getFieldDecorator} = this.props.form
-=======
 	@computed
 	get currUser() {
 		return this.props.userStore.currUser
 	}
->>>>>>> abd9d81f3528b5bd0fc04aab22c5ea45074ae6f6
 
 
 	doLogin = () => {
