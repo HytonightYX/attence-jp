@@ -10,7 +10,7 @@ const moment = require('moment')
 const compression = require('compression')
 
 const db = require('./db/db')
-const utils = require('./util')
+
 
 const app = express()
 const port = 8080
@@ -77,6 +77,16 @@ app.post('/Login', async function (req, res) {
 			res.status(200).json({code: 301, data: null, msg: '用户名或密码错误'})
 		}
 	})
+})
+
+
+const face = require('./util/face')
+
+app.get('/face', function (req, res) {
+	var REF_IMG = './img/ref.jpg';
+	var QRY_IMG = './img/04.jpg';
+	var ret = face.faceDetect(REF_IMG,QRY_IMG)
+	res.status(200).json({code: 200, data: 1})
 })
 
 
