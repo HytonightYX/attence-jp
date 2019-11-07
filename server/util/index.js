@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 /**
  * 转换 整形时间戳（YYYYMMDDhhmmss） to YYYY/MM/DD or YYYY/MM/DD HH/MM/SS
  * hms 是否需要 HH/MM/SS
@@ -17,6 +19,11 @@ const formatTS = (d, hms = true) => {
 	}
 }
 
+const newDateTime = (format='YYYYMMDDhhmmss') => {
+	return moment(new Date()).format(format)
+}
+
 module.exports = {
-	formatTS
+	formatTS,
+	newDateTime
 }
