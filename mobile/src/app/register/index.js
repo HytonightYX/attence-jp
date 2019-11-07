@@ -5,6 +5,7 @@ import MDatePicker from 'react-mobile-datepicker'
 import * as DT from '@util/date'
 import './index.less'
 import moment from 'moment'
+import { USER_TYPE } from '@constant/data'
 
 const {TextArea} = Input
 const {Step} = Steps
@@ -99,8 +100,8 @@ class Register extends React.Component {
 		this.setState({showDatePicker: false})
 	}
 
-	doReturn = ()=>{
-		window.location.replace(`/`);
+	doReturn = () => {
+		window.location.replace(`/`)
 	}
 
 
@@ -111,6 +112,7 @@ class Register extends React.Component {
 		const compList = ['bizplus']
 		const deptList = ['部门1', '部门2', '部门3']
 		const positionList = ['职位1', '职位2', '职位3']
+		console.log(USER_TYPE)
 
 		return (
 
@@ -243,6 +245,18 @@ class Register extends React.Component {
 										<Select size='large' placeholder='请选择职位...'>
 											{positionList.map((item, index) => (
 												<Option value={item} key={item}>{item}</Option>
+											))}
+										</Select>
+									)}
+								</Form.Item>
+								<Form.Item label="社员类型">
+									{getFieldDecorator('type', {
+										rules: [{required: true, message: '请选择社员类型！'}],
+										initialValue: 1001
+									})(
+										<Select size='large' placeholder='请选择职位...'>
+											{USER_TYPE.map((item) => (
+												<Option value={item.id} key={item.id}>{item.name}</Option>
 											))}
 										</Select>
 									)}
