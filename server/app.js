@@ -82,11 +82,11 @@ app.post('/Login', async function (req, res) {
 
 const face = require('./util/face')
 
-app.get('/face', function (req, res) {
+app.get('/face', async function (req, res) {
 	var REF_IMG = './img/ref.jpg';
 	var QRY_IMG = './img/04.jpg';
-	var ret = face.faceDetect(REF_IMG,QRY_IMG)
-	res.status(200).json({code: 200, data: 1})
+	var ret = await face.faceDetect(REF_IMG,QRY_IMG)
+	res.status(200).json({code: 200, data: ret})
 })
 
 
