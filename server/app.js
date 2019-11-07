@@ -99,12 +99,10 @@ app.get('/loc', async function (req, res) {
 })
 
 
+app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
-
-// app.listen(port, () => console.log(`> Running on localhost:${port}`))
-
-var options = {
-  key:fs.readFileSync('/usr/local/key/1897739_manqc.site.key'),
-  cert:fs.readFileSync('/usr/local/key/1897739_manqc.site.pem')
-}
-https.createServer(options,app).listen(443)
+// var options = {
+//   key:fs.readFileSync('/usr/local/key/1897739_manqc.site.key'),
+//   cert:fs.readFileSync('/usr/local/key/1897739_manqc.site.pem')
+// }
+// https.createServer(options,app).listen(443)
