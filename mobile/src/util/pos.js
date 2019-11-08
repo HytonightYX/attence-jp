@@ -34,12 +34,15 @@ export default function getPosition () {
           let url = `${host}/json?language=ja&key=${key}&latlng=${lat},${lng}`
           const r = await axios.get(url)
           if (r && r.status === 200) {
-            console.log(r.data)
-            resolve(r.data.results[0].formatted_address)
+            resolve({
+              lat,
+              lng,
+              loc: r.data.results[0].formatted_address
+            })
           }else{
             reject('获取地址失败')
           }
-          
+
           // let lat = pos.coords.latitude
           // let lng = pos.coords.longitude
           // let params = { params: { lat: pos.coords.latitude, lng: pos.coords.longitude } }

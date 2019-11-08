@@ -4,18 +4,15 @@ import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
 import './index.less'
-import { computed, toJS } from 'mobx'
+import { computed } from 'mobx'
 
 @inject('userStore')
 @observer
 class Login extends React.Component {
-
-
 	@computed
 	get currUser() {
 		return this.props.userStore.currUser
 	}
-
 
 	doLogin = () => {
 		this.props.form.validateFields(async (err, values) => {
@@ -36,12 +33,10 @@ class Login extends React.Component {
 
 	render() {
 		const {getFieldDecorator} = this.props.form
-		console.log()
 		return (
-			<>
-				{this.currUser && <Redirect to='/'/>}
-
 				<div className='g-login'>
+					{this.currUser && <Redirect to='/'/>}
+
 					<div className="m-tri">
 						<div className='m-title'>勤怠管理</div>
 					</div>
@@ -99,9 +94,7 @@ class Login extends React.Component {
 							</Form.Item>
 						</Form>
 					</div>
-
 				</div>
-			</>
 		)
 	}
 }

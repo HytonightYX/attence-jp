@@ -109,7 +109,7 @@ app.post('/Clock', async function (req, res) {
 app.post('/ClockInfo', async function (req, res) {
 	let sql = `CALL PROC_USER_CLOCK_INFO(?)`
 	let params = req.body
-	params.create_at = utils.newDateTime()
+	params.apdt = utils.newDateTime()
 	params.clock_date = utils.newDateTime('YYYYMMDD000000')
 
 	callProc(sql, params, res, (r) => {
