@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Icon, Form, Tag, message, Input, Skeleton, Slider, Drawer, Switch, Button, TimePicker, DatePicker } from 'antd'
+import { Icon, Form, Tag, message, Input, Skeleton, Slider, Drawer, Switch, Button, TimePicker, DatePicker, Spin } from 'antd'
 import getPosition from '@util/pos'
 import * as DT from '@util/date'
 import './index.less'
@@ -159,13 +159,16 @@ class Card extends React.Component {
 			} else {
 				switch (this.clockInfo.clock_status) {
 					case clock_status.CLOCK_INIT:
-						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading} block>上班打卡</Button>
+						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading}
+						               block>上班打卡</Button>
 					case clock_status.CLOCK_IN:
-						return <Button type="primary" size="large" onClick={this.doClockOut} loading={this.clockLoading} block>下班打卡</Button>
+						return <Button type="primary" size="large" onClick={this.doClockOut} loading={this.clockLoading}
+						               block>下班打卡</Button>
 					case clock_status.CLOCK_OUT:
 						return <Button type="primary" size="large" onClick={this.doClockOut} disabled block>已下班</Button>
 					default:
-						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading} block>上班打卡</Button>
+						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading}
+						               block>上班打卡</Button>
 				}
 			}
 		}
@@ -174,14 +177,14 @@ class Card extends React.Component {
 			<div className='g-card'>
 
 
-					<div className="m-hd">
-						<div className="m-hd-info">
-							<span className="m-name">{this.currUser.name}</span>
-							<span className="m-day">{DT.newDate()}</span>
-						</div>
-						<div className="m-time">{this.state.now}</div>
+				<div className="m-hd">
+					<div className="m-hd-info">
+						<span className="m-name">{this.currUser.name}</span>
+						<span className="m-day">{DT.newDate()}</span>
 					</div>
-				<Skeleton active loading={this.state.loading}>
+					<div className="m-time">{this.state.now}</div>
+				</div>
+				<Spin spinning={this.state.loading} indicator={<Icon type="loading" style={{fontSize: 24}} spin/>}>
 					<div className="m-body">
 						<div className="m-tl m-start">
 							<div className="m-mark"></div>
@@ -193,7 +196,8 @@ class Card extends React.Component {
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 								</> :
 								<>
-									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_in)}</div>
+									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_in)}
+									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_in_loc}</div>
 								</>
 							}
@@ -207,7 +211,8 @@ class Card extends React.Component {
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 								</> :
 								<>
-									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_out)}</div>
+									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_out)}
+									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_out_loc}</div>
 								</>
 							}
@@ -238,7 +243,7 @@ class Card extends React.Component {
 
 					<ClockBtn/>
 
-				</Skeleton>
+				</Spin>
 
 				<Drawer
 					className="g-drawer"
