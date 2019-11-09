@@ -14,10 +14,14 @@ const format = 'HH:mm'
 const dateFormat = 'YYYY/MM/DD'
 const now = moment(new Date(), dateFormat)
 const marks = {
-	1: '1小时',
-	2: '2小时',
-	3: '3小时',
-	4: '4小时',
+	0: '0.5',
+	1: '1.0',
+	2: '1.5',
+	3: '2.0',
+	4: '2.5',
+	5: '3.0',
+	6: '3.5',
+	7: '4.0',
 }
 
 const clock_status = {
@@ -230,7 +234,7 @@ class Card extends React.Component {
 							<span className="m-title-s">休憩時間</span>
 							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{this.state.rest}小时</Tag>}
 							{this.state.updateRest &&
-							<Slider marks={marks} min={1} max={4} defaultValue={this.state.rest} onAfterChange={this.doRest}/>}
+							<Slider marks={marks} min={0} max={7} defaultValue={this.state.rest} onAfterChange={this.doRest}/>}
 						</div>
 
 					</div>
