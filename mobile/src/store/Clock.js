@@ -10,6 +10,9 @@ class Clock {
 	@observable
 	loading = false
 
+	@observable
+	faceChecking = 'false' // 'false' => 'checking' => 'true'
+
 	@action
 	async setInfo(uid) {
 		console.log('setInfo')
