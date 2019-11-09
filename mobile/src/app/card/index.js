@@ -191,8 +191,12 @@ class Card extends React.Component {
 							<div className="m-title-s">始业打卡</div>
 							{this.clockInfo && this.clockInfo.clock_status === 0 ?
 								<>
-									<div className="m-time-s"><Icon type="clock-circle"/>09:13</div>
+									<div className="m-time-s">
+										<Icon type="clock-circle"/>09:13 
+										<div className="m-face"><Icon type="camera"/></div>
+									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
+
 								</> :
 								<>
 									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_in)}
@@ -206,7 +210,10 @@ class Card extends React.Component {
 							<div className="m-title-s">终业打卡</div>
 							{this.clockInfo && this.clockInfo.clock_status < 2 ?
 								<>
-									<div className="m-time-s"><Icon type="clock-circle"/>18:00</div>
+									<div className="m-time-s">
+										<Icon type="clock-circle"/>18:00
+										<div className="m-face"><Icon type="camera"/></div>
+									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 								</> :
 								<>
