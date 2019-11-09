@@ -15,8 +15,6 @@ import './less/variables.less';
 
 configure({enforceActions: 'observed'})
 
-console.log(process.env.REACT_APP_ENV)
-
 ReactDOM.render(
 	<Provider {...injects}>
 		<ConfigProvider locale={zhCN}>
