@@ -4,6 +4,7 @@ import { Icon, Form, Tag, message, Input, Skeleton, Slider, Drawer, Switch, Butt
 import getPosition from '@util/pos'
 import * as DT from '@util/date'
 import './index.less'
+import { CARD_MARK } from '@constant/data'
 
 import moment from 'moment'
 import { computed, toJS } from 'mobx'
@@ -12,19 +13,8 @@ import { Redirect } from 'react-router-dom'
 
 var   _timeHandle 
 const {TextArea} = Input
-const format = 'HH:mm'
+const timeformat = 'HH:mm'
 const dateFormat = 'YYYY/MM/DD'
-const now = moment(new Date(), dateFormat)
-const marks = {
-	0: '0.5',
-	1: '1.0',
-	2: '1.5',
-	3: '2.0',
-	4: '2.5',
-	5: '3.0',
-	6: '3.5',
-	7: '4.0',
-}
 
 const clock_status = {
 	CLOCK_INIT: 0,
@@ -239,7 +229,7 @@ class Card extends React.Component {
 							<span className="m-title-s">休憩時間</span>
 							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{this.state.rest}小时</Tag>}
 							{this.state.updateRest &&
-							<Slider marks={marks} min={0} max={7} defaultValue={this.state.rest} onAfterChange={this.doRest}/>}
+							<Slider marks={CARD_MARK} min={0} max={7} defaultValue={this.state.rest} onAfterChange={this.doRest}/>}
 						</div>
 
 					</div>
@@ -266,12 +256,12 @@ class Card extends React.Component {
 				>
 					<div className="m-repl-wrap">
 						<div className="m-repl-title">
-							<DatePicker defaultValue={now} format={dateFormat}/>
+							<DatePicker defaultValue={DT.newDate()} format={DT.DATE_FORMAT}/>
 						</div>
 						<div className="m-repl-row">
-							<TimePicker className="m-time" defaultValue={now} format={format} block/>
+							<TimePicker className="m-time" defaultValue={DT.newDate()} format={DT.TIME_FORMAT_S} block/>
 							<span className="m-bk">-</span>
-							<TimePicker className="m-time" defaultValue={now} format={format} block/>
+							<TimePicker className="m-time" defaultValue={DT.newDate()} format={DT.TIME_FORMAT_S} block/>
 						</div>
 						<div className="m-repl-rowc">
 							<label>上班地点</label>

@@ -70,8 +70,11 @@ app.post('/Login', async function (req, res) {
 	let params = req.body
 
 	callProc(sql, params, res, (users) => {
-		if (users.length > 0) {
+		console.log(users)
+		if ((users.length > 0)&&(users[0].status===1)) {
 			res.status(200).json({code: 200, data: users[0], msg: '登录成功'})
+		} else if ((users.length > 0)&&(users[0].status===0)){
+			res.status(200).json({code: 301, data: null, msg: '请等待管理员审核'})
 		} else {
 			res.status(200).json({code: 301, data: null, msg: '用户名或密码错误'})
 		}

@@ -8,6 +8,11 @@ let prefixInteger = (num, length) => {
 }
 
 
+export const TIME_FORMAT_S = 'HH:mm'
+export const TIME_FORMAT_L = 'HH:mm:ss'
+export const DATE_FORMAT   = 'YYYY/MM/DD'
+
+
 export let formatDate = (date) => {
 	return moment(date).format('YYYY/MM/DD')
 }
