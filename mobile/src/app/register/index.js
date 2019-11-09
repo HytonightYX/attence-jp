@@ -1,30 +1,43 @@
 import React from 'react'
-import { Form, Menu, DatePicker, Icon, Switch, Modal, Result, Button, Input, Steps, message, Select } from 'antd'
+import { Form, Icon, Result, Button, Input, Steps, message, Select, Upload } from 'antd'
 import { inject, observer } from 'mobx-react'
 import MDatePicker from 'react-mobile-datepicker'
+import moment from 'moment'
+
+import { USER_TYPE } from '@constant/data'
+import * as urls from '@constant/urls'
 import * as DT from '@util/date'
 import './index.less'
-import moment from 'moment'
-import { USER_TYPE } from '@constant/data'
 
 const {TextArea} = Input
-const {Step} = Steps
 const {Option} = Select
+
+function beforeUpload(file) {
+	const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+	if (!isJpgOrPng) {
+		message.error('You can only upload JPG/PNG file!')
+	}
+	const isLt2M = file.size / 1024 / 1024 < 2
+	if (!isLt2M) {
+		message.error('Image must smaller than 2MB!')
+	}
+	return isJpgOrPng && isLt2M
+}
+
 
 @inject('userStore')
 @observer
 class Register extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			code: null,
-			loading: false,
-			succ: false,
-			visible: false,
-			regVal: null,
-			step: 1,
-			showDatePicker: false
-		}
+
+	state = {
+		code: null,
+		loading: false,
+		succ: false,
+		visible: false,
+		regVal: null,
+		step: 1,
+		showDatePicker: false,
+		faceUploading: false
 	}
 
 	handleCancel = () => {
@@ -63,7 +76,10 @@ class Register extends React.Component {
 				user.birthday = parseInt(user['birthday'].replace(/-/g, '') + '000000')
 				user.hiredate = parseInt(user['hiredate'].replace(/-/g, '') + '000000')
 				user.apdt = DT.newDateTime()
+				user.face = this.state.imageUrl
+
 				console.log(user)
+
 				this.props.userStore.register(user)
 					.then(data => {
 						console.log('data', data)
@@ -104,18 +120,37 @@ class Register extends React.Component {
 		window.location.replace(`/`)
 	}
 
+	handleChange = info => {
+		if (info.file.status === 'uploading') {
+			this.setState({faceUploading: true})
+			return
+		}
+		if (info.file.status === 'done') {
+			const r = info.file.response
+			if (r && r.code === 200) {
+				this.setState({
+					imageUrl: r.data.path
+				})
+			}
+		}
+	}
 
 	render() {
 		const {getFieldDecorator, getFieldValue, setFieldsValue} = this.props.form
-		const {succ, visible, loading, step} = this.state
-		const totStep = 3
+		const {succ, visible, loading, step, faceUploading, imageUrl} = this.state
+		const totStep = 4
 		const compList = ['bizplus']
 		const deptList = ['部门1', '部门2', '部门3']
 		const positionList = ['职位1', '职位2', '职位3']
-		console.log(USER_TYPE)
+
+		const uploadButton = (
+			<div>
+				<Icon type={faceUploading ? 'loading' : 'plus'}/>
+				<div className="ant-upload-text">上传</div>
+			</div>
+		)
 
 		return (
-
 			<div className='g-reg'>
 				{(!succ) &&
 				<div>
@@ -262,6 +297,28 @@ class Register extends React.Component {
 									)}
 								</Form.Item>
 							</>
+						)}
+
+						{step === 4 && (
+							<Form.Item label="照片">
+								{getFieldDecorator('face', {
+									rules: [{required: true, message: '请上传照片！'}],
+								})(
+									<div className="upload-wrap">
+										<Upload
+											name="avatar"
+											listType="picture-card"
+											className="avatar-uploader"
+											showUploadList={false}
+											action={urls.API_USER_FACE_UPLOAD}
+											beforeUpload={beforeUpload}
+											onChange={this.handleChange}
+										>
+											{imageUrl ? <img src={urls.HOST_IMG + imageUrl} alt="avatar" style={{width: '100%'}}/> : uploadButton}
+										</Upload>
+									</div>
+								)}
+							</Form.Item>
 						)}
 
 						<Form.Item>
