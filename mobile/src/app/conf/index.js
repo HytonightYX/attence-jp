@@ -1,14 +1,10 @@
 import React,{ Suspense, lazy }  from 'react'
 import { inject, observer } from 'mobx-react'
-import MDatePicker from 'react-mobile-datepicker'
-import * as DT from '@util/date'
 import './index.less'
 
-import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-// import Dashboard from 'component/'
-import moment from 'moment'
 
-
+@inject('userStore')
+@observer
 class Conf extends React.Component {
 	constructor(props) {
 		super(props)
@@ -16,6 +12,11 @@ class Conf extends React.Component {
 			loading: false,
 		}
 	}
+
+  doLogout=()=>{
+    this.props.userStore.logout()
+    window.location.replace(`/`)
+  }
 
 	render() {
 		return (
@@ -125,7 +126,7 @@ class Conf extends React.Component {
         </div>
 
         <div className="m-group m-last">
-          <div className="m-menu">ログアウト</div>
+          <div className="m-menu" onClick={this.doLogout}>ログアウト</div>
         </div>
 
 

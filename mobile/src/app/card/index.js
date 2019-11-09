@@ -9,6 +9,8 @@ import moment from 'moment'
 import { computed, toJS } from 'mobx'
 import { Redirect } from 'react-router-dom'
 
+
+var   _timeHandle 
 const {TextArea} = Input
 const format = 'HH:mm'
 const dateFormat = 'YYYY/MM/DD'
@@ -48,7 +50,7 @@ class Card extends React.Component {
 			comp: 'Nexs株式会社有限公司',
 			loc: null,
 			lat: null,
-			lng: null
+			lng: null,
 		}
 	}
 
@@ -84,12 +86,15 @@ class Card extends React.Component {
 	}
 
 	doTimer = () => {
-		setTimeout(() => {
+		_timeHandle = setTimeout(() => {
 			this.setState({now: DT.newTime()})
 			this.doTimer()
 		}, 1000)
 	}
 
+	componentWillUnmount() {
+		clearTimeout(_timeHandle)
+	}
 
 	doAuto = (checked) => {
 		this.setState({auto: checked})

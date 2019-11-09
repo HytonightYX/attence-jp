@@ -5,10 +5,33 @@ import { inject, observer } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
 import './index.less'
 import { computed } from 'mobx'
+import token from 'util/token.js'
 
 @inject('userStore')
 @observer
 class Login extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			loading: false,
+		}
+
+		let user = token.getUser()
+		if (user) {
+			let values = { email: user.email, pwd: user.pwd }
+			this.props.userStore.login(user)
+				.then(r => {
+					if (r && r.code === 200) {
+						message.success(r.msg)
+					} else if (r && r.code === 301) {
+						message.error(r.msg)
+					}
+				})
+		}
+	}
+
+
+
 	@computed
 	get currUser() {
 		return this.props.userStore.currUser
@@ -19,6 +42,8 @@ class Login extends React.Component {
 			if (err) {
 				return
 			}
+
+			console.log(values)
 
 			this.props.userStore.login(values)
 				.then(r => {

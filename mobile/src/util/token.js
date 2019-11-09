@@ -1,8 +1,7 @@
 import decode from 'jwt-decode'
 
-const TOKEN_KEY = 'BIZPLUS_TOKEN'
-const USER_KEY  = 'BIZPLUS_USER'
-const EXP_KEY   = 'BIZPLUS_EXP'
+const TOKEN_KEY = 'ATTENCE_TOKEN'
+const USER_KEY  = 'ATTENCE_USER'
 
 export const getToken = () => {
   return window.localStorage.getItem(TOKEN_KEY)
@@ -22,7 +21,7 @@ export const decodeToken = () => {
 
 
 export const getUser = () => {
-  return window.localStorage.getItem(JSON.parse(USER_KEY))
+  return JSON.parse(window.localStorage.getItem(USER_KEY))
 }
 
 export const saveUser = (data) => {
@@ -33,17 +32,6 @@ export const removeUser = () => {
   window.localStorage.removeItem(USER_KEY)
 }
 
-export const getExp = () => {
-  return window.localStorage.getItem(JSON.parse(EXP_KEY))
-}
-
-export const saveExp = (data) => {
-  window.localStorage.setItem(EXP_KEY, JSON.stringify(data))
-}
-
-export const removeExp = () => {
-  window.localStorage.removeItem(EXP_KEY)
-}
 
 
-export default { getToken, saveToken, removeToken, decodeToken, getUser, saveUser, removeUser,getExp,saveExp,removeExp }
+export default { getToken, saveToken, removeToken, decodeToken, getUser, saveUser, removeUser }
