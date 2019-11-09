@@ -118,4 +118,28 @@ app.post('/ClockInfo', async function (req, res) {
 	})
 })
 
+
+/**
+ * 用户注册上传头像
+ * 返回头像服务器存储路径
+ */
+app.post('/FaceUpload', async function (req, res) {
+	const form = new formidable.IncomingForm()
+	form.parse(req)
+
+	form.on('fileBegin', function (name, file) {
+		let type = file.name.split('.').slice(-1)
+		console.log(file)
+		file.path = 'upload/' + `Face_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+	})
+
+	form.on('file', (name, file) => {
+		res.status(200).json({
+			code: 200,
+			msg: '上传照片成功',
+			data: {path: file.path}
+		})
+	})
+})
+
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
