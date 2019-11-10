@@ -1,7 +1,8 @@
 import React,{ Suspense, lazy }  from 'react'
 import { inject, observer } from 'mobx-react'
 import './index.less'
-
+import { toJS } from "mobx";
+import get from '@util/getValue'
 
 @inject('userStore')
 @observer
@@ -11,6 +12,7 @@ class Conf extends React.Component {
 		this.state = {
 			loading: false,
 		}
+    console.log(JSON.stringify(this.props.userStore.currUser))
 	}
 
   doLogout=()=>{
@@ -18,7 +20,17 @@ class Conf extends React.Component {
     window.location.replace(`/`)
   }
 
+  doCardSet=()=>{
+    window.location.replace(`/#cset`)
+  }
+
 	render() {
+
+    let user = this.props.userStore.currUser
+    let name = get(user,'name','')
+    let dept = get(user,'dept','')
+    let posi = get(user,'position','')
+
 		return (
 			<div className='g-main'>
 
@@ -27,8 +39,8 @@ class Conf extends React.Component {
 						<img src="" alt=""/>
 			  	</div>
 			  	<div className="m-hd-info">
-						<span className="m-name">胡思源</span>
-						<span className="m-desc">开发二部 / 营业部长</span>
+						<span className="m-name">{name}</span>
+						<span className="m-desc">{dept} / {posi}</span>
 			  	</div>
 			  </div>
 				
@@ -121,7 +133,7 @@ class Conf extends React.Component {
         </div>
 
         <div className="m-group">
-          <div className="m-menu">打卡默认设置</div>
+          <div className="m-menu" onClick={this.doCardSet}>打卡默认设置</div>
           <div className="m-menu">请假记录一览</div>
         </div>
 

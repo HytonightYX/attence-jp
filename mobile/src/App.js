@@ -20,6 +20,8 @@ class App extends React.Component {
 								<Switch>
 									<Route exact path='/'     component={Loadable({ loader: () => import('./app/card')})}  />
 									<Route exact path='/conf' component={Loadable({ loader: () => import('./app/conf')})}  />
+
+									<Route exact path='/cset' component={Loadable({ loader: () => import('./app/conf/cset')})}  />
 								</Switch>
 							</NavWrapper>
 						</div>

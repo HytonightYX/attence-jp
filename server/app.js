@@ -122,6 +122,28 @@ app.post('/ClockInfo', async function (req, res) {
 })
 
 
+app.post('/SaveCardSche', async function (req, res) {
+	let sql = `CALL PROC_CONF_SAVE_CARDSCHE(?)`
+	let params = req.body
+
+	callProc(sql, params, res, (r) => {
+		// console.log(r)
+		res.status(200).json({code: 200,  msg: r[0].err_msg})
+	})
+})
+
+app.post('/LoadCardSche', async function (req, res) {
+	let sql = `CALL PROC_CONF_LOAD_CARDSCHE(?)`
+	let params = req.body
+	callProc(sql, params, res, (r) => {
+		// console.log(r)
+		res.status(200).json({code: 200, data:r[0], msg: '获取打卡设置成功'})
+	})
+})
+
+
+
+
 /**
  * 用户注册上传头像
  * 返回头像服务器存储路径

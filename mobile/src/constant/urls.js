@@ -7,4 +7,12 @@ export const API_USER_CLOCK_INFO     = API_SERVER + '/ClockInfo'
 export const API_USER_CLOCK          = API_SERVER + '/Clock'
 export const API_USER_FACE_UPLOAD    = API_SERVER + '/FaceUpload'
 
+
+/* Conf 相关 API */
+export const API_CONF_SAVE_CARDSCHE = API_SERVER + '/SaveCardSche'
+export const API_CONF_LOAD_CARDSCHE = API_SERVER + '/LoadCardSche'
+
+
+
+
 export const HOST_IMG = API_SERVER + '/'

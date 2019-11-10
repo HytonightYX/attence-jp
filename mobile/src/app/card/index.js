@@ -263,12 +263,12 @@ class Card extends React.Component {
 				>
 					<div className="m-repl-wrap">
 						<div className="m-repl-title">
-							<DatePicker defaultValue={DT.newDate()} format={DT.DATE_FORMAT}/>
+							<DatePicker defaultValue={DT.now()} format={DT.DATE_FORMAT}/>
 						</div>
 						<div className="m-repl-row">
-							<TimePicker className="m-time" defaultValue={DT.newDate()} format={DT.TIME_FORMAT_S} block/>
+							<TimePicker className="m-time" defaultValue={DT.now()} format={DT.TIME_FORMAT_S} block/>
 							<span className="m-bk">-</span>
-							<TimePicker className="m-time" defaultValue={DT.newDate()} format={DT.TIME_FORMAT_S} block/>
+							<TimePicker className="m-time" defaultValue={DT.now()} format={DT.TIME_FORMAT_S} block/>
 						</div>
 						<div className="m-repl-rowc">
 							<label>上班地点</label>

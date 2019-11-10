@@ -13,8 +13,22 @@ export const TIME_FORMAT_L = 'HH:mm:ss'
 export const DATE_FORMAT   = 'YYYY/MM/DD'
 
 
+export let now = () => {
+	return moment(new Date())
+}
+
 export let formatDate = (date) => {
 	return moment(date).format('YYYY/MM/DD')
+}
+
+export let formatTime = (date) => {
+	return moment(date).format('hh:mm')
+}
+
+export let newTimeS = (timeString) => {
+	let hour = parseInt(timeString.split(':')[0])
+	let minute = parseInt(timeString.split(':')[1])
+	return moment({hour: hour, minute: minute})
 }
 
 export let newDateTime = (date) => {
