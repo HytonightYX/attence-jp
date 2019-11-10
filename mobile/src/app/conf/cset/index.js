@@ -35,10 +35,11 @@ class Cset extends React.Component {
   
 
   doStartTime=(e)=>{
+    // console.log(DT.formatTime(e))
     this.setState({start: DT.formatTime(e)})
   }
   doEndTime=(e)=>{
-    this.setState({end: e})
+    this.setState({end: DT.formatTime(e)})
   }
   doRest = (e) => {
     this.setState({ rest: e })
