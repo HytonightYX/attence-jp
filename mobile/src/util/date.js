@@ -26,6 +26,10 @@ export let formatTime = (date) => {
 }
 
 export let newTimeS = (timeString) => {
+	// console.log(timeString)
+	// if (typeof(timeString)==='undefined') {
+	// 	return moment({hour: 0, minute: 0})
+	// }
 	let hour = parseInt(timeString.split(':')[0])
 	let minute = parseInt(timeString.split(':')[1])
 	return moment({hour: hour, minute: minute})

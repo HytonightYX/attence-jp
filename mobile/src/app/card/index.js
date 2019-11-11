@@ -59,7 +59,18 @@ class Card extends React.Component {
 		return this.props.userStore.currUser
 	}
 
-	async UNSAFE_componentWillMount() {
+	// async UNSAFE_componentWillMount() {
+	// 	this.doTimer()
+	// 	this.setState({loading: true})
+	// 	getPosition().then(ret => {
+	// 		this.setState({...ret})
+	// 	}).catch(err => {
+	// 		message.info(err)
+	// 		this.setState({loading: false})
+	// 	})
+	// }
+
+	async componentDidMount() {
 		this.doTimer()
 		this.setState({loading: true})
 		getPosition().then(ret => {
@@ -68,9 +79,7 @@ class Card extends React.Component {
 			message.info(err)
 			this.setState({loading: false})
 		})
-	}
-
-	async componentDidMount() {
+		
 		if (this.currUser) await this.props.clockStore.setInfo(this.currUser.id)
 		this.setState({loading: false})
 	}
