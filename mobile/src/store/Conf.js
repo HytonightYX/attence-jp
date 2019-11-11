@@ -18,7 +18,7 @@ class Conf {
 
 	@action
 	async saveCardSche(params) {
-		const r = await axios.post(urls.API_CONF_SAVE_CARDSCHE, {params})
+		const r = await axios.post(urls.API_CONF_SAVE_CARDSCHE, params)
 		if (r && r.status === 200) {
 			console.log(r.data)
 			message.info(r.data.msg)
@@ -28,14 +28,10 @@ class Conf {
 	}
 
 	@action
-	async loadCardSche(uid) {
-		const r = await axios.post(urls.API_CONF_LOAD_CARDSCHE, {uid})
+	async loadCardSche(params) {
+		const r = await axios.post(urls.API_CONF_LOAD_CARDSCHE, params)
 		if (r && r.status === 200) {
-			message.success(r.data.msg)
-
-			runInAction(() => {
-				this.cardSche = r.data.data
-			})
+			return r.data.data
 		} else {
 			message.error('网络错误')
 		}

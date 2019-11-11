@@ -5,6 +5,8 @@ import './index.less'
 import { toJS } from "mobx";
 import get from '@util/getValue'
 import MobileSelect from 'mobile-select'
+import MDatePicker from 'react-mobile-datepicker'
+import moment from 'moment'
 
 const {TextArea} = Input
 
@@ -19,6 +21,7 @@ class Leave extends React.Component {
       restType: '请选择',
       fromdate: '请选择',
       todate:   '请选择',
+      showDatePicker: false,
 		}
 
     
@@ -32,6 +35,27 @@ class Leave extends React.Component {
         wheels: [{data:['旷工','病假','事欠','有休','代休','其他']}],
         position:[2]
     });
+  }
+
+  openDate = (type) => {
+    this.setState({ showDatePicker: true, type: type })
+  }
+
+  closeDate = () => {
+    this.setState({ showDatePicker: false })
+  }
+
+  selectDate = (time) => {
+    if (this.state.type === 'from') {
+      this.setState({
+        fromdate: moment(time).format('YYYY-MM-DD'),
+        todate:   moment(time).format('YYYY-MM-DD'),
+      })
+    } else {
+      this.setState({todate: moment(time).format('YYYY-MM-DD')})
+    }
+
+    this.setState({showDatePicker: false})
   }
 
 
@@ -51,7 +75,7 @@ class Leave extends React.Component {
         </div>
 
         <div className="m-group m-rest-date">
-          <div className="m-row">
+          <div className="m-row"  onClick={this.openDate.bind(this,'from')}>
             <span>开始日期</span>
             <div className="m-info">
               <span id="day">{this.state.fromdate}</span>
@@ -98,6 +122,14 @@ class Leave extends React.Component {
         </div>
 
         <Button type="primary" className="m-btn-rest">提 交</Button>
+
+        <MDatePicker
+          value={new Date()}
+          theme='ios'
+          isOpen={this.state.showDatePicker}
+          onSelect={this.selectDate}
+          onCancel={this.closeDate}
+        />
 			 
 
 			</div>

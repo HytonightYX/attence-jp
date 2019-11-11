@@ -257,7 +257,10 @@ class Card extends React.Component {
 							{this.clockInfo && this.clockInfo.clock_status < 2 ?
 								<>
 									<div className="m-time-s">
-										<Icon type="clock-circle"/>{this.cardSche.clock_out}
+										<Icon type="clock-circle"/>
+										{
+										//this.cardSche.clock_out
+									}
 										<div className="m-face"><Icon type="camera"/></div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
@@ -274,13 +277,21 @@ class Card extends React.Component {
 					<div className="m-ft">
 						<div className="m-tl m-company">
 							<span className="m-title-s">お客様名</span>
-							{!this.state.updateComp && <Tag color="red" onClick={this.doUpdateComp}>{this.cardSche.comp}</Tag>}
+							{!this.state.updateComp && <Tag color="red" onClick={this.doUpdateComp}>
+								{
+									//this.cardSche.comp
+								}
+							</Tag>}
 							{this.state.updateComp &&
 							<Input defaultValue={this.cardSche.comp} onChange={this.doComp} onBlur={this.doHideComp} />}
 						</div>
 						<div className="m-tl m-rest">
 							<span className="m-title-s">休憩時間</span>
-							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{this.cardSche.rest} 小时</Tag>}
+							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>
+								{
+									//this.cardSche.rest
+							  } 小时
+							</Tag>}
 							{this.state.updateRest &&
 							<Slider marks={CARD_MARK} min={0} max={7} defaultValue={this.cardSche.rest} onAfterChange={this.doRest}/>}
 						</div>
