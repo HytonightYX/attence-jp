@@ -169,7 +169,7 @@ app.post('/FaceUpload', async function (req, res) {
 })
 
 // 人脸识别接口
-app.get('/FaceCheck', async function (req, res) {
+app.post('/FaceCheck', async function (req, res) {
 	const REF_IMG = './img/ref.jpg'
 	const QRY_IMG = './img/04.jpg'
 	const ret = await face.faceDetect(REF_IMG,QRY_IMG)

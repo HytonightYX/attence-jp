@@ -13,15 +13,12 @@ class CameraFeed extends Component {
 
 	processDevices(devices) {
 		devices.forEach(device => {
-			console.log(device.label)
 			this.setDevice(device).catch(e => {})
 		})
 	}
 
 	async setDevice(device) {
-		console.log('setDevice', device)
 		const {deviceId} = device
-		console.log(deviceId)
 		const stream = await navigator.mediaDevices.getUserMedia({audio: false, video: {deviceId}})
 		this.videoPlayer.srcObject = stream
 		this.videoPlayer.play().catch(e => {})
@@ -35,14 +32,12 @@ class CameraFeed extends Component {
 		const context = canvas.getContext('2d')
 		context.drawImage(this.videoPlayer,125, 0, 350, 450, 0, 0, 350, 450)
 		canvas.toBlob(sendFile, 'image/jpeg')
-		// canvas.toBlob(this.blobToBase64)
 	}
 
 	blobToBase64(blob) {
 		return new Promise((resolve, reject) => {
 			const fileReader = new FileReader();
 			fileReader.onload = (e) => {
-				console.log(e.target.result)
 				resolve(e.target.result);
 			};
 			// readAsDataURL
@@ -59,7 +54,7 @@ class CameraFeed extends Component {
 				<div className="c-camera-feed__viewer">
 					<video ref={ref => (this.videoPlayer = ref)} width="600" height="450"/>
 				</div>
-				<Button type="primary" block onClick={this.takePhoto}>Take photo!</Button>
+				<Button type="primary" block onClick={this.takePhoto}>{this.props.btnContent}</Button>
 			</div>
 		)
 	}
