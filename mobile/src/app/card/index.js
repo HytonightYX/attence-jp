@@ -9,9 +9,11 @@ import { CARD_MARK } from '@constant/data'
 import moment from 'moment'
 import { computed, toJS } from 'mobx'
 import { Redirect } from 'react-router-dom'
+// import 'react-html5-camera-photo/build/css/index.css'
+import WebCamera from '../../component/WebCamera'
 
 
-var   _timeHandle 
+var   _timeHandle
 const {TextArea} = Input
 const timeformat = 'HH:mm'
 const dateFormat = 'YYYY/MM/DD'
@@ -23,7 +25,7 @@ const clock_status = {
 	CLOCK_DONE: 3
 }
 
-@inject('userStore', 'clockStore')
+@inject('userStore', 'clockStore', 'confStore')
 @observer
 class Card extends React.Component {
 	constructor(props) {
@@ -59,20 +61,32 @@ class Card extends React.Component {
 		return this.props.userStore.currUser
 	}
 
+	@computed
+	get faceCheckStatus() {
+		return this.props.clockStore.faceCheckStatus
+	}
+
+	@computed
+	get cardSche() {
+		return this.props.confStore.cardSche
+	}
+
 	async componentDidMount() {
 		// 初始化时间定时器
 		this.doTimer()
 		// 计算当前位置
 		this.setState({loading: true})
 		getPosition().then(ret => {
+			console.log('ret', ret)
 			this.setState({...ret})
 		}).catch(err => {
 			message.info(err)
-			this.setState({loading: false})
 		})
-		
-		// 取打卡记录
-		if (this.currUser) await this.props.clockStore.setInfo(this.currUser.id)
+
+		if (this.currUser) {
+			await this.props.clockStore.setInfo(this.currUser.id)
+			await this.props.confStore.loadCardSche(this.currUser.id)
+		}
 		this.setState({loading: false})
 	}
 	
@@ -123,6 +137,15 @@ class Card extends React.Component {
 		this.setState({updateComp: false})
 	}
 
+	showFaceCheck = () => {
+		this.setState({showFaceCheck: true})
+	}
+
+	closeFaceCheck = () => {
+		this.props.clockStore.setFaceCheckStatus('false')
+		this.setState({showFaceCheck: false})
+	}
+
 	doClockIn = async () => {
 		let params = {
 			lat: this.state.lat,
@@ -134,6 +157,10 @@ class Card extends React.Component {
 		await this.props.clockStore.clockIn(params)
 	}
 
+	beforeClockOut = async () => {
+		this.props.clockStore.setFaceCheckStatus('capturing')
+	}
+
 	doClockOut = async () => {
 		let params = {
 			lat: this.state.lat,
@@ -142,7 +169,12 @@ class Card extends React.Component {
 			uid: this.currUser.id,
 			status: clock_status.CLOCK_OUT
 		}
-		await this.props.clockStore.clockOut(params)
+
+		if (this.faceCheckStatus === 'pass') {
+			await this.props.clockStore.clockOut(params)
+		}
+
+		message.success('下班打卡')
 	}
 
 	formatTS = (ts) => {
@@ -150,12 +182,25 @@ class Card extends React.Component {
 		return `${str.substring(8, 10)}:${str.substring(10, 12)}`
 	}
 
+	onTakePhoto = (dataUri) => {
+		// Do stuff with the dataUri photo...
+		console.log('takePhoto', dataUri)
+	}
+
 	render() {
 		if (!this.currUser) {
 			return <Redirect to='/login'/>
 		}
 
-		let ClockBtn = () => {
+		const uploadImage = async file => {
+			console.log(file)
+
+			this.setState({
+				faceBlob: file
+			})
+		}
+
+		const ClockBtn = () => {
 			if (this.state.auto) {
 				return <Button type="primary" size="large" disabled block>自动打卡中...</Button>
 			} else {
@@ -164,12 +209,12 @@ class Card extends React.Component {
 						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading}
 						               block>上班打卡</Button>
 					case clock_status.CLOCK_IN:
-						return <Button type="primary" size="large" onClick={this.doClockOut} loading={this.clockLoading}
+						return <Button type="primary" size="large" onClick={this.beforeClockOut} loading={this.clockLoading}
 						               block>下班打卡</Button>
 					case clock_status.CLOCK_OUT:
 						return <Button type="primary" size="large" onClick={this.doClockOut} disabled block>已下班</Button>
 					default:
-						return <Button type="primary" size="large" onClick={this.doClockIn} loading={this.clockLoading}
+						return <Button type="primary" size="large" onClick={this.ndoClockIn} loading={this.clockLoading}
 						               block>上班打卡</Button>
 				}
 			}
@@ -177,8 +222,6 @@ class Card extends React.Component {
 
 		return (
 			<div className='g-card'>
-
-
 				<div className="m-hd">
 					<div className="m-hd-info">
 						<span className="m-name">{this.currUser.name}</span>
@@ -189,13 +232,13 @@ class Card extends React.Component {
 				<Spin spinning={this.state.loading} indicator={<Icon type="loading" style={{fontSize: 24}} spin/>}>
 					<div className="m-body">
 						<div className="m-tl m-start">
-							<div className="m-mark"></div>
-							<div className="m-line"></div>
+							<div className="m-mark" />
+							<div className="m-line" />
 							<div className="m-title-s">始业打卡</div>
 							{this.clockInfo && this.clockInfo.clock_status === 0 ?
 								<>
 									<div className="m-time-s">
-										<Icon type="clock-circle"/>09:13 
+										<Icon type="clock-circle"/>{this.cardSche.clock_in}
 										<div className="m-face"><Icon type="camera"/></div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
@@ -209,12 +252,12 @@ class Card extends React.Component {
 							}
 						</div>
 						<div className="m-tl m-end">
-							<div className="m-mark"></div>
+							<div className="m-mark" />
 							<div className="m-title-s">终业打卡</div>
 							{this.clockInfo && this.clockInfo.clock_status < 2 ?
 								<>
 									<div className="m-time-s">
-										<Icon type="clock-circle"/>18:00
+										<Icon type="clock-circle"/>{this.cardSche.clock_out}
 										<div className="m-face"><Icon type="camera"/></div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
@@ -231,15 +274,15 @@ class Card extends React.Component {
 					<div className="m-ft">
 						<div className="m-tl m-company">
 							<span className="m-title-s">お客様名</span>
-							{!this.state.updateComp && <Tag color="red" onClick={this.doUpdateComp}>{this.state.comp}</Tag>}
+							{!this.state.updateComp && <Tag color="red" onClick={this.doUpdateComp}>{this.cardSche.comp}</Tag>}
 							{this.state.updateComp &&
-							<Input defaultValue={this.state.comp} onChange={this.doComp} onBlur={this.doHideComp}></Input>}
+							<Input defaultValue={this.cardSche.comp} onChange={this.doComp} onBlur={this.doHideComp} />}
 						</div>
 						<div className="m-tl m-rest">
 							<span className="m-title-s">休憩時間</span>
-							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{this.state.rest}小时</Tag>}
+							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{this.cardSche.rest} 小时</Tag>}
 							{this.state.updateRest &&
-							<Slider marks={CARD_MARK} min={0} max={7} defaultValue={this.state.rest} onAfterChange={this.doRest}/>}
+							<Slider marks={CARD_MARK} min={0} max={7} defaultValue={this.cardSche.rest} onAfterChange={this.doRest}/>}
 						</div>
 
 					</div>
@@ -263,6 +306,7 @@ class Card extends React.Component {
 					visible={this.state.repl}
 					height={540}
 					headerStyle={{background: '#3d74aa'}}
+					destroyOnClose={true}
 				>
 					<div className="m-repl-wrap">
 						<div className="m-repl-title">
@@ -292,7 +336,19 @@ class Card extends React.Component {
 					</div>
 				</Drawer>
 
-
+				<Drawer
+					className="g-drawer face-drawer"
+					title="人脸验证"
+					placement="top"
+					closable={false}
+					onClose={this.closeFaceCheck}
+					visible={this.faceCheckStatus !== 'false'}
+					height={600}
+					headerStyle={{background: '#3d74aa'}}
+					destroyOnClose={true}
+				>
+					<WebCamera sendFile={uploadImage} />
+				</Drawer>
 			</div>
 		)
 	}

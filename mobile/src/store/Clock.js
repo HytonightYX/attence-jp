@@ -11,7 +11,7 @@ class Clock {
 	loading = false
 
 	@observable
-	faceChecking = 'false' // 'false' => 'checking' => 'true'
+	faceCheckStatus = 'false' // 'false' => 'capturing' => uploading => 'pass' or 'fail'
 
 	@action
 	async setInfo(uid) {
@@ -24,7 +24,7 @@ class Clock {
 			})
 		}
 	}
-
+	
 	@action
 	async clockIn(params) {
 		this.loading = true
@@ -54,6 +54,25 @@ class Clock {
 			})
 		}
 	}
+
+	@action
+	async faceCheck(params) {
+		this.faceCheckStatus = 'uploading'
+
+		const r = await axios.post(urls.API_USER_FACE_CHECK, params)
+		if (r && r.status === 200) {
+			runInAction(() => {
+				this.faceCheckStatus = r.data.code === 200 ? 'pass' : 'fail'
+			})
+		}
+	}
+
+	@action
+	setFaceCheckStatus(newStatus) {
+		this.faceCheckStatus = newStatus
+	}
+
+
 }
 
 export default new Clock()
