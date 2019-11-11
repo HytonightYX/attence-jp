@@ -26,7 +26,6 @@ export default function getPosition () {
     return new Promise( (resolve, reject) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos)=>{
-
           let lat = pos.coords.latitude
           let lng = pos.coords.longitude
           let host = 'https://maps.googleapis.com/maps/api/geocode'

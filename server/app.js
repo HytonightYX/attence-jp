@@ -10,6 +10,7 @@ const compression = require('compression')
 
 const db = require('./db/db')
 const utils = require('./util')
+const face = require('./util/face')
 
 const app = express()
 const port = 8080
@@ -121,7 +122,6 @@ app.post('/ClockInfo', async function (req, res) {
 	})
 })
 
-
 app.post('/SaveCardSche', async function (req, res) {
 	let sql = `CALL PROC_CONF_SAVE_CARDSCHE(?)`
 	let params = req.body
@@ -135,6 +135,7 @@ app.post('/SaveCardSche', async function (req, res) {
 app.post('/LoadCardSche', async function (req, res) {
 	let sql = `CALL PROC_CONF_LOAD_CARDSCHE(?)`
 	let params = req.body
+	console.log(params)
 	callProc(sql, params, res, (r) => {
 		// console.log(r)
 		res.status(200).json({code: 200, data:r[0], msg: '获取打卡设置成功'})
@@ -165,6 +166,14 @@ app.post('/FaceUpload', async function (req, res) {
 			data: {path: file.path}
 		})
 	})
+})
+
+// 人脸识别接口
+app.get('/FaceCheck', async function (req, res) {
+	const REF_IMG = './img/ref.jpg'
+	const QRY_IMG = './img/04.jpg'
+	const ret = await face.faceDetect(REF_IMG,QRY_IMG)
+	res.status(200).json({code: 200, data: ret})
 })
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
