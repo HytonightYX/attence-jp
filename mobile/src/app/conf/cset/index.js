@@ -23,19 +23,17 @@ class Cset extends React.Component {
 		}
 	}
 
-  async UNSAFE_componentWillMount() {
+  async componentWillMount() {
     let params = {
       uid:  this.props.userStore.currUser.id
     }
     this.setState({ loading: true })
     let sche = await this.props.confStore.LoadCardSche(params)
-    console.log(JSON.stringify(sche)+'sche')
     this.setState({ loading: false, start: sche.clock_in, end:sche.clock_out, comp: sche.comp, rest:sche.rest })
   }
   
 
   doStartTime=(e)=>{
-    console.log(DT.formatTime(e))
     this.setState({start: DT.formatTime(e)})
   }
   doEndTime=(e)=>{
@@ -67,8 +65,6 @@ class Cset extends React.Component {
   }
 
 	render() {
-    console.log(this.state.start)
-    console.log(this.state.end)
 
 		return (
 			<div className='g-cset'>

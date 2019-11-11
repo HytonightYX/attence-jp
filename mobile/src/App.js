@@ -18,10 +18,11 @@ class App extends React.Component {
 						<div className='app-root'>
 							<NavWrapper>
 								<Switch>
-									<Route exact path='/'     component={Loadable({ loader: () => import('./app/card')})}  />
-									<Route exact path='/conf' component={Loadable({ loader: () => import('./app/conf')})}  />
-
-									<Route exact path='/cset' component={Loadable({ loader: () => import('./app/conf/cset')})}  />
+									<Route exact path='/'      component={Loadable({ loader: () => import('./app/card')})}  />
+									<Route exact path='/leave' component={Loadable({ loader: () => import('./app/leave')})}  />
+									
+									<Route exact path='/conf'  component={Loadable({ loader: () => import('./app/conf')})}  />
+									<Route exact path='/cset'  component={Loadable({ loader: () => import('./app/conf/cset')})}  />
 								</Switch>
 							</NavWrapper>
 						</div>

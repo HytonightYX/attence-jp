@@ -59,19 +59,10 @@ class Card extends React.Component {
 		return this.props.userStore.currUser
 	}
 
-	// async UNSAFE_componentWillMount() {
-	// 	this.doTimer()
-	// 	this.setState({loading: true})
-	// 	getPosition().then(ret => {
-	// 		this.setState({...ret})
-	// 	}).catch(err => {
-	// 		message.info(err)
-	// 		this.setState({loading: false})
-	// 	})
-	// }
-
 	async componentDidMount() {
+		// 初始化时间定时器
 		this.doTimer()
+		// 计算当前位置
 		this.setState({loading: true})
 		getPosition().then(ret => {
 			this.setState({...ret})
@@ -80,21 +71,24 @@ class Card extends React.Component {
 			this.setState({loading: false})
 		})
 		
+		// 取打卡记录
 		if (this.currUser) await this.props.clockStore.setInfo(this.currUser.id)
 		this.setState({loading: false})
 	}
-
+	
+	// 定时间初始化函数
 	doTimer = () => {
 		_timeHandle = setTimeout(() => {
 			this.setState({now: DT.newTime()})
 			this.doTimer()
 		}, 1000)
 	}
-
+	
+	// 退出关闭定时间 防止内存泄露
 	componentWillUnmount() {
 		clearTimeout(_timeHandle)
 	}
-
+	
 	doAuto = (checked) => {
 		this.setState({auto: checked})
 	}
