@@ -90,11 +90,11 @@ class Card extends React.Component {
 		}
 
 		if (this.clockInfo.clock_status >= clock_status.CLOCK_IN) {
-			this.setState({clockInImg: urls.HOST_IMG + `upload/face/${this.currUser.uid}_clock_in.jpg`})
+			this.setState({clockInImg: urls.HOST_IMG + `upload/face/${this.clockInfo.uid}_clock_in.jpg`})
 		}
 
 		if (this.clockInfo.clock_status >= clock_status.CLOCK_OUT) {
-			this.setState({clockOutImg: urls.HOST_IMG + `upload/face/${this.currUser.uid}_clock_out.jpg`})
+			this.setState({clockOutImg: urls.HOST_IMG + `upload/face/${this.clockInfo.uid}_clock_out.jpg`})
 		}
 
 		getPosition().then(ret => {
