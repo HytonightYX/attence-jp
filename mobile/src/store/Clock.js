@@ -37,7 +37,7 @@ class Clock {
 				this.clockInfo = r.data.data[0]
 				this.loading = false
 			})
-			return r.data.data
+			return r.data
 		}
 	}
 
@@ -52,7 +52,7 @@ class Clock {
 				this.clockInfo = r.data.data[0]
 				this.loading = false
 			})
-			return r.data.data
+			return r.data
 		}
 	}
 

@@ -193,8 +193,6 @@ class Card extends React.Component {
 			this.props.clockStore.clockOut(params)
 				.then(r => message.success(r.msg, 0.7))
 		}
-
-		message.success('下班打卡')
 	}
 
 	formatTS = (ts) => {
@@ -223,6 +221,10 @@ class Card extends React.Component {
 				filename
 			)
 
+			formData.append("userFace", this.currUser.face)
+
+			console.log(formData)
+
 			this.props.clockStore.faceCheck(formData)
 				.then(ret => {
 					if (ret.code === 200) {
@@ -232,6 +234,8 @@ class Card extends React.Component {
 						} else {
 							this.setState({clockOutImg: urls.HOST_IMG + ret.data.path})
 						}
+					} else {
+						message.error('人脸验证失败，请重试', 0.7)
 					}
 				})
 		}
