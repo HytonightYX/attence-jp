@@ -172,8 +172,26 @@ app.post('/FaceUpload', async function (req, res) {
 app.post('/FaceCheck', async function (req, res) {
 	const REF_IMG = './img/ref.jpg'
 	const QRY_IMG = './img/04.jpg'
-	const ret = await face.faceDetect(REF_IMG,QRY_IMG)
-	res.status(200).json({code: 200, data: ret})
+	let path = ''
+
+	const form = new formidable.IncomingForm()
+	form.parse(req)
+
+	form.on('fileBegin', function (name, file) {
+		// let type = file.name.split('.').slice(-1)
+		console.log(file)
+		file.path = 'upload/face/' + file.name
+	})
+
+	form.on('file', async (name, file) => {
+		const ret = await face.faceDetect(REF_IMG, QRY_IMG)
+		// const ret = ['true']
+		if (ret[0]) {
+			res.status(200).json({code: 200, data: {ret: ret[0], path: file.path}})
+		} else {
+			res.status(200).json({code: 401, data: ret})
+		}
+	})
 })
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))

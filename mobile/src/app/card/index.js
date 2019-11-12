@@ -6,7 +6,6 @@ import * as DT from '@util/date'
 import './index.less'
 import { CARD_MARK } from '@constant/data'
 
-import moment from 'moment'
 import { computed, toJS } from 'mobx'
 import { Redirect } from 'react-router-dom'
 import 'react-html5-camera-photo/build/css/index.css'
@@ -16,8 +15,6 @@ import * as urls from '@constant/urls'
 
 var _timeHandle
 const {TextArea} = Input
-const timeformat = 'HH:mm'
-const dateFormat = 'YYYY/MM/DD'
 
 const clock_status = {
 	CLOCK_INIT: 0,
@@ -51,6 +48,7 @@ class Card extends React.Component {
 			loc: null,
 			lat: null,
 			lng: null,
+
 		}
 	}
 
@@ -163,7 +161,7 @@ class Card extends React.Component {
 			status: clock_status.CLOCK_IN
 		}
 		this.props.clockStore.clockIn(params)
-			.then(r => console.log(r.msg))
+			.then(r => message.success(r.msg, 0.7))
 	}
 
 	doClockOut = async () => {
@@ -179,7 +177,7 @@ class Card extends React.Component {
 
 		if (this.faceCheckStatus === 'pass') {
 			this.props.clockStore.clockOut(params)
-				.then(r => console.log(r.msg))
+				.then(r => message.success(r.msg, 0.7))
 		}
 
 		message.success('下班打卡')
@@ -195,6 +193,24 @@ class Card extends React.Component {
 		console.log('takePhoto', dataUri)
 	}
 
+	doUploadFace = (e) => {
+		let formData = new FormData()
+		let filename = `${this.clockInfo.uid}`
+		if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
+			filename += '_clock_in.jpg'
+		} else {
+			filename += '_clock_out.jpg'
+		}
+
+		formData.append(
+			"face",
+			e.target.files[0],
+			filename
+		)
+
+		this.props.clockStore.faceCheck(formData)
+	}
+
 	render() {
 		const {rest, comp, clockInSche, clockOutSche} = this.state
 
@@ -202,35 +218,25 @@ class Card extends React.Component {
 			return <Redirect to='/login'/>
 		}
 
-		const uploadFace = async file => {
-
-			this.props.clockStore.setFaceCheckStatus('uploading')
-
-			const r = await axios.post(urls.API_USER_FACE_CHECK)
-			if (r && r.status === 200 && r.data.code === 200) {
-				console.log(r.data)
-				this.props.clockStore.setFaceCheckStatus('pass')
-				if (this.clockInfo.clock_status === 0) {
-					// 进行上班打卡
-					this.doClockIn()
-				} else if (this.clockInfo.clock_status === 1) {
-					// 进行下班打卡
-					this.doClockOut()
-				}
-			}
-		}
-
 		const ClockBtn = () => {
 			if (this.state.auto) {
 				return <Button type="primary" size="large" disabled block>自动打卡中...</Button>
-			} else {
+			}
+
+			if (this.faceCheckStatus === 'pass') {
 				switch (this.clockInfo.clock_status) {
+					case clock_status.CLOCK_INIT:
+						return <Button type="primary" size="large" onClick={this.doClockIn} block>上班打卡</Button>
+					case clock_status.CLOCK_IN:
+						return <Button type="primary" size="large" onClick={this.doClockOut} block>下班打卡</Button>
 					case clock_status.CLOCK_OUT:
 						return <Button type="primary" size="large" disabled block>已下班</Button>
-					default:
-						return <Button type="primary" size="large" onClick={this.beforeClock} loading={this.clockLoading}
-						               block>打卡验证</Button>
 				}
+			} else {
+				if (this.clockInfo.clock_status === clock_status.CLOCK_OUT) {
+					return <Button type="primary" size="large" disabled block>已下班</Button>
+				}
+				return <Button type="primary" size="large" disabled block>尚未人脸验证</Button>
 			}
 		}
 
@@ -243,7 +249,11 @@ class Card extends React.Component {
 					</div>
 					<div className="m-time">{this.state.now}</div>
 				</div>
-				<Spin spinning={this.state.loading} indicator={<Icon type="loading" style={{fontSize: 24}} spin/>}>
+
+				<Spin
+					spinning={this.state.loading || this.faceCheckStatus === 'uploading'}
+					indicator={<Icon type="loading" style={{fontSize: 24}} spin/>}
+				>
 					<div className="m-body">
 						<div className="m-tl m-start">
 							<div className="m-mark"/>
@@ -253,13 +263,20 @@ class Card extends React.Component {
 								<>
 									<div className="m-time-s">
 										<Icon type="clock-circle"/>{clockInSche}
-										<div className="m-face"><Icon type="camera"/></div>
+										<div className="m-face"><label htmlFor="file-upload"><Icon type="camera"/></label></div>
+										<input id="file-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 
 								</> :
 								<>
 									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_in)}
+										<div className="m-face">
+											<img src={
+												this.clockInfo.clock_status >= clock_status.CLOCK_IN ?
+													`${urls.HOST_IMG}upload/face/${this.clockInfo.uid}_clock_in.jpg` : null
+											}  alt=""/>
+										</div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_in_loc}</div>
 								</>
@@ -272,12 +289,19 @@ class Card extends React.Component {
 								<>
 									<div className="m-time-s">
 										<Icon type="clock-circle"/>{clockOutSche}
-										<div className="m-face"><Icon type="camera"/></div>
+										<div className="m-face"><label htmlFor="file-upload"><Icon type="camera"/></label></div>
+										<input id="file-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 								</> :
 								<>
 									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_out)}
+										<div className="m-face">
+											<img src={
+												this.clockInfo.clock_status >= clock_status.CLOCK_OUT ?
+												`${urls.HOST_IMG}upload/face/${this.clockInfo.uid}_clock_out.jpg` : null
+											}  alt=""/>
+										</div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_out_loc}</div>
 								</>
@@ -346,34 +370,54 @@ class Card extends React.Component {
 						<div className="m-repl-fun">
 							<Button type="primary" size="large" block>补卡</Button>
 						</div>
-
 					</div>
-				</Drawer>
-
-				<Drawer
-					className="g-drawer face-drawer"
-					title="人脸验证"
-					placement="top"
-					closable={false}
-					onClose={this.closeFaceCheck}
-					visible={this.faceCheckStatus !== 'false' && this.faceCheckStatus !== 'pass'}
-					height={600}
-					headerStyle={{background: '#3d74aa'}}
-					destroyOnClose={true}
-				>
-					<Spin
-						spinning={
-							this.faceCheckStatus === 'checking' ||
-							this.faceCheckStatus === 'uploading'
-						}
-					>
-						<WebCamera sendFile={uploadFace} btnContent={this.clockInfo.clock_status === 0 ? '上班打卡' : '下班打卡'}/>
-					</Spin>
 				</Drawer>
 			</div>
 		)
 	}
 }
 
+const Backup = () => {
+	const uploadFace = async file => {
+
+		this.props.clockStore.setFaceCheckStatus('uploading')
+
+		const r = await axios.post(urls.API_USER_FACE_CHECK)
+		if (r && r.status === 200 && r.data.code === 200) {
+			console.log(r.data)
+			this.props.clockStore.setFaceCheckStatus('pass')
+			if (this.clockInfo.clock_status === 0) {
+				// 进行上班打卡
+				this.doClockIn()
+			} else if (this.clockInfo.clock_status === 1) {
+				// 进行下班打卡
+				this.doClockOut()
+			}
+		}
+	}
+
+	return (
+		<Drawer
+			className="g-drawer face-drawer"
+			title="人脸验证"
+			placement="top"
+			closable={false}
+			onClose={this.closeFaceCheck}
+			visible={this.faceCheckStatus !== 'false' && this.faceCheckStatus !== 'pass'}
+			height={600}
+			headerStyle={{background: '#3d74aa'}}
+			destroyOnClose={true}
+		>
+			<Spin
+				spinning={
+					this.faceCheckStatus === 'checking' ||
+					this.faceCheckStatus === 'uploading'
+				}
+			>
+				<WebCamera sendFile={uploadFace} btnContent={this.clockInfo.clock_status === 0 ? '上班打卡' : '下班打卡'}/>
+			</Spin>
+		</Drawer>
+	)
+}
 
 export default Card
