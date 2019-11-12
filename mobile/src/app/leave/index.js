@@ -79,7 +79,7 @@ class Leave extends React.Component {
     this.setState({ reason: e.currentTarget.value })
   }
 
-  upload = async (e)=>{
+  doUploadImg = async (e)=>{
     // console.log()
     let file = e.currentTarget.files[0]
     this.setState({ loading: true})
@@ -87,6 +87,12 @@ class Leave extends React.Component {
     let { imgList } = this.state
     imgList.push(r.data.data.path)
     this.setState({ loading: false, imgList: imgList })
+  }
+
+  doDelImg =(index)=>{
+    let { imgList } = this.state
+    delete imgList[index]
+    this.setState({ imgList: imgList })
   }
 
 
@@ -143,14 +149,14 @@ class Leave extends React.Component {
             <span>图片</span>
             <div className="m-img-wrap">
               {imgList.map((item,index)=>
-                <div className="m-img-reason">
-                  <div className="m-del"></div>
+                <div className="m-img-reason" key={index}>
+                  <div className="m-del" onClick={this.doDelImg.bind(this,index)}></div>
                   <img src={`${prefix}${item}`} alt=""/>
                 </div>
 
               )}
               <div className="m-img-upload">
-                <input type="file" onChange={this.upload}></input>
+                <input type="file" onChange={this.doUploadImg}></input>
                 <div className="m-sel"><Icon type="plus" /></div>
               </div>
             </div>

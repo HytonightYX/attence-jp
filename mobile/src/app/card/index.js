@@ -82,8 +82,11 @@ class Card extends React.Component {
 	async componentDidMount() {
 		if (this.currUser) {
 			await this.props.clockStore.setInfo(this.currUser.id)
-			let sche = await this.props.confStore.loadCardSche({uid: this.currUser.id})
-			this.setState({...sche})
+			this.props.confStore.loadCardSche(this.currUser.id)
+				.then(ret => {
+					console.log('ret', ret)
+					this.setState({...ret})
+				})
 		}
 
 		getPosition().then(ret => {
