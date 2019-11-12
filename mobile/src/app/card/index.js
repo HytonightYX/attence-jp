@@ -82,7 +82,7 @@ class Card extends React.Component {
 	async componentDidMount() {
 		if (this.currUser) {
 			await this.props.clockStore.setInfo(this.currUser.id)
-			this.props.confStore.LoadCardSche(this.currUser.id)
+			this.props.confStore.loadCardSche(this.currUser.id)
 				.then(ret => {
 					console.log('ret', ret)
 					this.setState({...ret})

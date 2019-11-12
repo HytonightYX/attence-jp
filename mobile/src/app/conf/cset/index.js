@@ -28,10 +28,10 @@ class Cset extends React.Component {
       uid:  this.props.userStore.currUser.id
     }
     this.setState({ loading: true })
-    let sche = await this.props.confStore.LoadCardSche(params)
+    let sche = await this.props.confStore.loadCardSche(params)
     this.setState({ loading: false, start: sche.clock_in, end:sche.clock_out, comp: sche.comp, rest:sche.rest })
   }
-  
+
 
   doStartTime=(e)=>{
     this.setState({start: DT.formatTime(e)})
@@ -78,20 +78,20 @@ class Cset extends React.Component {
               <div className="m-row">
                 <span>出勤時間</span>
                 <div className="m-wrap">
-                  <TimePicker className="m-time" 
-                    value={DT.newTimeS(this.state.start)} 
-                    format={DT.TIME_FORMAT_S} 
-                    minuteStep={10} 
-                    disabledHours={() => [0,1,2,3,4,5,6]} 
+                  <TimePicker className="m-time"
+                    value={DT.newTimeS(this.state.start)}
+                    format={DT.TIME_FORMAT_S}
+                    minuteStep={10}
+                    disabledHours={() => [0,1,2,3,4,5,6]}
                     onChange={this.doStartTime}
                     block/>
                   <span className="m-bk">-</span>
-                  <TimePicker className="m-time" 
-                    value={DT.newTimeS(this.state.end)} 
-                    format={DT.TIME_FORMAT_S} 
-                    minuteStep={10} 
+                  <TimePicker className="m-time"
+                    value={DT.newTimeS(this.state.end)}
+                    format={DT.TIME_FORMAT_S}
+                    minuteStep={10}
                     onChange={this.doEndTime}
-                    disabledHours={() => [0,1,2,3,4,5,6]} 
+                    disabledHours={() => [0,1,2,3,4,5,6]}
                   block/>
                 </div>
               </div>
