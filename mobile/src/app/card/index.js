@@ -49,6 +49,8 @@ class Card extends React.Component {
 			lat: null,
 			lng: null,
 
+			clockInImg: null,
+			clockOutImg: null
 		}
 	}
 
@@ -87,12 +89,23 @@ class Card extends React.Component {
 				})
 		}
 
+		if (this.clockInfo.clock_status >= clock_status.CLOCK_IN) {
+			this.setState({clockInImg: urls.HOST_IMG + `upload/face/${this.currUser.uid}_clock_in.jpg`})
+		}
+
+		if (this.clockInfo.clock_status >= clock_status.CLOCK_OUT) {
+			this.setState({clockOutImg: urls.HOST_IMG + `upload/face/${this.currUser.uid}_clock_out.jpg`})
+		}
+
 		getPosition().then(ret => {
-			console.log('ret', ret)
+			console.log('位置信息：', ret)
 			this.setState({...ret})
 		}).catch(err => {
 			message.info(err)
 		})
+		// 	.finally(() => {
+		// 	this.setState({loading: false})
+		// })
 
 		this.setState({loading: false})
 	}
@@ -111,6 +124,7 @@ class Card extends React.Component {
 	showRepl = () => {
 		this.setState({repl: true})
 	}
+
 	closeRepl = () => {
 		this.setState({repl: false})
 	}
@@ -194,21 +208,33 @@ class Card extends React.Component {
 	}
 
 	doUploadFace = (e) => {
-		let formData = new FormData()
-		let filename = `${this.clockInfo.uid}`
-		if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
-			filename += '_clock_in.jpg'
-		} else {
-			filename += '_clock_out.jpg'
+		if (e.target.files.length > 0) {
+			let formData = new FormData()
+			let filename = `${this.clockInfo.uid}`
+			if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
+				filename += '_clock_in.jpg'
+			} else {
+				filename += '_clock_out.jpg'
+			}
+
+			formData.append(
+				"face",
+				e.target.files[0],
+				filename
+			)
+
+			this.props.clockStore.faceCheck(formData)
+				.then(ret => {
+					if (ret.code === 200) {
+						message.success('人脸验证成功')
+						if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
+							this.setState({clockInImg: urls.HOST_IMG + ret.data.path})
+						} else {
+							this.setState({clockOutImg: urls.HOST_IMG + ret.data.path})
+						}
+					}
+				})
 		}
-
-		formData.append(
-			"face",
-			e.target.files[0],
-			filename
-		)
-
-		this.props.clockStore.faceCheck(formData)
 	}
 
 	render() {
@@ -263,19 +289,20 @@ class Card extends React.Component {
 								<>
 									<div className="m-time-s">
 										<Icon type="clock-circle"/>{clockInSche}
-										<div className="m-face"><label htmlFor="file-upload"><Icon type="camera"/></label></div>
+										<div className="m-face">
+											{this.state.clockInImg ?
+												<img src={this.state.clockInImg} className="m-face-img" alt=""/> :
+												<label htmlFor="file-upload"><Icon type="camera"/></label>
+											}
+										</div>
 										<input id="file-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
-
 								</> :
 								<>
 									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_in)}
 										<div className="m-face">
-											<img src={
-												this.clockInfo.clock_status >= clock_status.CLOCK_IN ?
-													`${urls.HOST_IMG}upload/face/${this.clockInfo.uid}_clock_in.jpg` : null
-											}  alt=""/>
+											<img src={this.state.clockInImg} className="m-face-img" alt=""/>
 										</div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_in_loc}</div>
@@ -289,7 +316,12 @@ class Card extends React.Component {
 								<>
 									<div className="m-time-s">
 										<Icon type="clock-circle"/>{clockOutSche}
-										<div className="m-face"><label htmlFor="file-upload"><Icon type="camera"/></label></div>
+										<div className="m-face">
+											{this.state.clockOutImg ?
+												<img src={this.state.clockOutImg} className="m-face-img" alt=""/> :
+												<label htmlFor="file-upload"><Icon type="camera"/></label>
+											}
+										</div>
 										<input id="file-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
@@ -297,10 +329,7 @@ class Card extends React.Component {
 								<>
 									<div className="m-time-s active"><Icon type="clock-circle"/>{this.formatTS(this.clockInfo.clock_out)}
 										<div className="m-face">
-											<img src={
-												this.clockInfo.clock_status >= clock_status.CLOCK_OUT ?
-												`${urls.HOST_IMG}upload/face/${this.clockInfo.uid}_clock_out.jpg` : null
-											}  alt=""/>
+											<img src={this.state.clockOutImg} className="m-face-img" alt=""/>
 										</div>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>{this.clockInfo.clock_out_loc}</div>

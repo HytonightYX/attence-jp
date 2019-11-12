@@ -70,6 +70,8 @@ class Clock {
 			runInAction(() => {
 				this.faceCheckStatus = r.data.code === 200 ? 'pass' : 'fail'
 			})
+
+			return r.data
 		}
 	}
 

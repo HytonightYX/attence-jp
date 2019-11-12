@@ -102,7 +102,7 @@ app.post('/Clock', async function (req, res) {
 
 	callProc(sql, params, res, (r) => {
 		console.log(r)
-		res.status(200).json({code: 301, data: r, msg: '打卡成功'})
+		res.status(200).json({code: 200, data: r, msg: '打卡成功'})
 	})
 })
 
