@@ -9,9 +9,15 @@ export const API_USER_FACE_UPLOAD    = API_SERVER + '/FaceUpload'
 export const API_USER_FACE_CHECK     = API_SERVER + '/FaceCheck'
 
 
+/* Leave 相关 API */
+export const API_LEAVE_UPLOAD = API_SERVER + '/UploadFile'
+
+
+
 /* Conf 相关 API */
 export const API_CONF_SAVE_CARDSCHE = API_SERVER + '/SaveCardSche'
 export const API_CONF_LOAD_CARDSCHE = API_SERVER + '/LoadCardSche'
+
 
 
 

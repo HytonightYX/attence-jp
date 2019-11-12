@@ -142,6 +142,28 @@ app.post('/LoadCardSche', async function (req, res) {
 	})
 })
 
+/**
+ * 返回图片服务器存储路径
+ */
+app.post('/UploadFile', async function (req, res) {
+	const form = new formidable.IncomingForm()
+	form.parse(req)
+
+	form.on('fileBegin', function (name, file) {
+		let type = file.name.split('.').slice(-1)
+		console.log(file)
+		file.path = 'upload/' + `Leave_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+	})
+
+	form.on('file', (name, file) => {
+		res.status(200).json({
+			code: 200,
+			msg: '上传照片成功',
+			data: {path: file.path}
+		})
+	})
+})
+
 
 
 
@@ -169,7 +191,7 @@ app.post('/FaceUpload', async function (req, res) {
 })
 
 // 人脸识别接口
-app.get('/FaceCheck', async function (req, res) {
+app.post('/FaceCheck', async function (req, res) {
 	const REF_IMG = './img/ref.jpg'
 	const QRY_IMG = './img/04.jpg'
 	const ret = await face.faceDetect(REF_IMG,QRY_IMG)

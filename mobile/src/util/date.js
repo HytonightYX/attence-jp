@@ -13,6 +13,12 @@ export const TIME_FORMAT_L = 'HH:mm:ss'
 export const DATE_FORMAT   = 'YYYY/MM/DD'
 
 
+export let durationDays = (from, to)=>{
+	let _from = moment(from)
+	let _to = moment(to)
+	return parseInt(moment.duration(_to.diff(_from)).asDays())+1
+}
+
 export let now = () => {
 	return moment(new Date())
 }

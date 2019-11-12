@@ -24,19 +24,20 @@ class Clock {
 			})
 		}
 	}
-	
+
 	@action
 	async clockIn(params) {
 		this.loading = true
 
 		const r = await axios.post(urls.API_USER_CLOCK, params)
+		console.log('上班打卡', r.data)
 		if (r && r.status === 200) {
 			runInAction(() => {
 				console.log('clockIn', r.data)
 				this.clockInfo = r.data.data[0]
 				this.loading = false
-				return r.data
 			})
+			return r.data.data
 		}
 	}
 
@@ -50,8 +51,8 @@ class Clock {
 				console.log('clockOut', r.data)
 				this.clockInfo = r.data.data[0]
 				this.loading = false
-				return r.data
 			})
+			return r.data.data
 		}
 	}
 
