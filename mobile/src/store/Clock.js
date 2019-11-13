@@ -37,7 +37,7 @@ class Clock {
 				this.clockInfo = r.data.data[0]
 				this.loading = false
 			})
-			return r.data.data
+			return r.data
 		}
 	}
 
@@ -52,7 +52,7 @@ class Clock {
 				this.clockInfo = r.data.data[0]
 				this.loading = false
 			})
-			return r.data.data
+			return r.data
 		}
 	}
 
@@ -70,6 +70,8 @@ class Clock {
 			runInAction(() => {
 				this.faceCheckStatus = r.data.code === 200 ? 'pass' : 'fail'
 			})
+
+			return r.data
 		}
 	}
 

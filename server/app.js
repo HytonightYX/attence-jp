@@ -102,7 +102,7 @@ app.post('/Clock', async function (req, res) {
 
 	callProc(sql, params, res, (r) => {
 		console.log(r)
-		res.status(200).json({code: 301, data: r, msg: '打卡成功'})
+		res.status(200).json({code: 200, data: r, msg: '打卡成功'})
 	})
 })
 
@@ -192,12 +192,18 @@ app.post('/FaceUpload', async function (req, res) {
 
 // 人脸识别接口
 app.post('/FaceCheck', async function (req, res) {
-	const REF_IMG = './img/ref.jpg'
-	const QRY_IMG = './img/04.jpg'
-	let path = ''
+	// const REF_IMG = './img/ref.jpg'
+	// const QRY_IMG = './img/04.jpg'
+	let REF_IMG = ''
 
 	const form = new formidable.IncomingForm()
 	form.parse(req)
+
+	form.on('field', function(name, value) {
+		if (name === 'userFace') {
+			REF_IMG = value
+		}
+	});
 
 	form.on('fileBegin', function (name, file) {
 		// let type = file.name.split('.').slice(-1)
@@ -206,7 +212,7 @@ app.post('/FaceCheck', async function (req, res) {
 	})
 
 	form.on('file', async (name, file) => {
-		const ret = await face.faceDetect(REF_IMG, QRY_IMG)
+		const ret = await face.faceDetect(REF_IMG, file.path)
 		// const ret = ['true']
 		if (ret[0]) {
 			res.status(200).json({code: 200, data: {ret: ret[0], path: file.path}})
