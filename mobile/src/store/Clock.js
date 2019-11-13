@@ -11,7 +11,7 @@ class Clock {
 	loading = false
 
 	@observable
-	faceCheckStatus = 'false' // 'false' => 'capturing' => uploading => 'pass' or 'fail'
+	faceCheckStatus = 'before' // 'before' => 'uploading' => 'pass'
 
 	@action
 	async setInfo(uid) {
@@ -59,7 +59,6 @@ class Clock {
 	@action
 	async faceCheck(params) {
 		this.faceCheckStatus = 'uploading'
-
 		const r = await axios.post(urls.API_USER_FACE_CHECK, params, {
 				headers: {'Content-Type': 'multipart/form-data'}
 			}
@@ -72,6 +71,8 @@ class Clock {
 			})
 
 			return r.data
+		} else {
+			message.error('网络错误')
 		}
 	}
 
