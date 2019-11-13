@@ -10,7 +10,33 @@ import MDatePicker from 'react-mobile-datepicker'
 import moment from 'moment'
 
 const {TextArea} = Input
-
+const dateConfig = {
+    'year': {
+        format: 'YYYY',
+        caption: 'Year',
+        step: 1,
+    },
+    'month': {
+        format: 'MM',
+        caption: 'Mon',
+        step: 1,
+    },
+    'date': {
+        format: 'DD',
+        caption: 'Day',
+        step: 1,
+    },
+    'hour': {
+        format: 'hh',
+        caption: 'Hour',
+        step: 1,
+    },
+    'minute': {
+        format: 'mm',
+        caption: 'Min',
+        step: 30,
+    }
+}
 
 
 
@@ -38,7 +64,7 @@ class Leave extends React.Component {
     var restTypeSel = new MobileSelect({
         trigger: '#day',
         title: '单项选择',
-        wheels: [{data:['旷工','病假','事欠','有休','代休','其他']}],
+        wheels: [{data:['旷工','病假','加班','事欠','有休','代休','其他']}],
         position:[2]
     });
   }
@@ -60,15 +86,15 @@ class Leave extends React.Component {
       
       let durDays = DT.durationDays(time,time)
       this.setState({
-        fromdate: moment(time).format('YYYY-MM-DD'),
-        todate:   moment(time).format('YYYY-MM-DD'),
+        fromdate: moment(time).format('YYYY-MM-DD HH:mm'),
+        todate:   moment(time).format('YYYY-MM-DD HH:mm'),
         durDays: durDays,
         showDatePicker: false,
       })
     } else {
       let durDays = DT.durationDays(this.state.fromdate,time)
       this.setState({
-        todate: moment(time).format('YYYY-MM-DD'),
+        todate: moment(time).format('YYYY-MM-DD HH:mm'),
         durDays: durDays,
         showDatePicker: false,
       })
@@ -130,7 +156,7 @@ class Leave extends React.Component {
             </div>
           </div>
           <div className="m-row">
-            <span>请假时长</span>
+            <span>时长</span>
             <div className="m-info">
               <span id="day">{this.state.durDays}</span>
             </div>
@@ -139,7 +165,7 @@ class Leave extends React.Component {
 
         <div className="m-group m-rest-reason">
           <div className="m-row m-row-reason">
-            <span>请假理由</span>
+            <span>理由</span>
             <TextArea placeholder="请输入请假事由" rows={4} onChange={this.doReason}></TextArea>
           </div>
         </div>
@@ -163,16 +189,11 @@ class Leave extends React.Component {
           </div>
         </div>
 
-        <div className="m-group m-rest-audit">
-          <div className="m-row m-row-audit">
-            <span>审批人</span>
-            <Icon type="plus-circle" />
-          </div>
-        </div>
 
         <Button type="primary" className="m-btn-rest">提 交</Button>
 
         <MDatePicker
+          dateConfig={dateConfig}
           value={this.date}
           theme='ios'
           isOpen={this.state.showDatePicker}

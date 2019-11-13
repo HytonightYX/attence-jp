@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const DATE_FORMAT  = 'YYYY/MM/DD'
 export const MONTH_FORMAT = 'YYYY/MM'
 
@@ -18,12 +20,26 @@ export const USER_TYPE = [
 
 
 export const CARD_MARK = {
-  0: '0.5',
-  1: '1.0',
-  2: '1.5',
-  3: '2.0',
-  4: '2.5',
-  5: '3.0',
-  6: '3.5',
-  7: '4.0',
+  0: {
+      style: {
+        color: '#f50',
+      },
+      label: <strong>30分钟</strong>,
+     },
+  1: '35',
+  2: '40',
+  3: {
+      style: {
+        color: '#f50',
+      },
+      label: <strong>45分钟</strong>,
+     },
+  4: '50',
+  5: '55',
+  6: {
+      style: {
+        color: '#f50',
+      },
+      label: <strong>60分钟</strong>,
+     }
 }

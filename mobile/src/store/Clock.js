@@ -60,8 +60,13 @@ class Clock {
 	async faceCheck(params) {
 		this.faceCheckStatus = 'uploading'
 
-		const r = await axios.post(urls.API_USER_FACE_CHECK, params)
+		const r = await axios.post(urls.API_USER_FACE_CHECK, params, {
+				headers: {'Content-Type': 'multipart/form-data'}
+			}
+		)
+
 		if (r && r.status === 200) {
+			console.log('人脸识别结果', r.data)
 			runInAction(() => {
 				this.faceCheckStatus = r.data.code === 200 ? 'pass' : 'fail'
 			})

@@ -16,7 +16,12 @@ export const DATE_FORMAT   = 'YYYY/MM/DD'
 export let durationDays = (from, to)=>{
 	let _from = moment(from)
 	let _to = moment(to)
-	return parseInt(moment.duration(_to.diff(_from)).asDays())+1
+
+	console.log(moment.duration(_to.diff(_from)))
+	let day = parseInt(moment.duration(_to.diff(_from)).asDays())+1
+	let hour = parseInt(moment.duration(_to.diff(_from)).asHours())
+
+	return (day>1)?`${day}天(${hour}小时)`:`${hour}小时`
 }
 
 export let now = () => {

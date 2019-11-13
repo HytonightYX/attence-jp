@@ -103,7 +103,8 @@ class Cset extends React.Component {
 
               <div className="m-row">
                 <span className="m-title-s">休憩時間</span>
-                <Slider marks={CARD_MARK} min={0} max={7} value={this.state.rest} onChange={this.doRest}/>
+                <Slider marks={CARD_MARK} min={0} max={6} value={this.state.rest} onChange={this.doRest}/>
+                
               </div>
 
               <div className="m-row">
