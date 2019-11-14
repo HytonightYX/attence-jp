@@ -1,27 +1,20 @@
-import React, { Suspense, lazy } from 'react'
+import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { Icon, Form, Tag, message, Input, Skeleton, Slider, Drawer, Switch, Button, TimePicker, DatePicker, Spin } from 'antd'
-import getPosition from '@util/pos'
-import * as DT from '@util/date'
-import './index.less'
-import { CARD_MARK } from '@constant/data'
-
+import { Icon, Tag, message, Input, Slider, Drawer, Button, TimePicker, DatePicker, Spin } from 'antd'
 import { computed, toJS } from 'mobx'
 import { Redirect } from 'react-router-dom'
 import 'react-html5-camera-photo/build/css/index.css'
-import WebCamera from '../../component/WebCamera'
-import axios from 'axios'
+
+import getPosition from '@util/pos'
+import * as DT from '@util/date'
+import fileToBlobScaled from '@util/fileToBlobScaled'
+import { CARD_MARK, CLOCK_STATUS as clock_status } from '@constant/data'
+
 import * as urls from '@constant/urls'
+import './index.less'
 
 var _timeHandle
 const {TextArea} = Input
-
-const clock_status = {
-	CLOCK_INIT: 0,
-	CLOCK_IN: 1,
-	CLOCK_OUT: 2,
-	CLOCK_DONE: 3
-}
 
 @inject('userStore', 'clockStore', 'confStore')
 @observer
@@ -180,22 +173,27 @@ class Card extends React.Component {
 		return `${str.substring(8, 10)}:${str.substring(10, 12)}`
 	}
 
-	doUploadFace = (e) => {
+	doUploadFace = async (e) => {
 		if (e.target.files.length > 0) {
+			const faceFile = e.target.files[0]
 			let formData = new FormData()
 			let filename = `${this.clockInfo.uid}`
+
 			if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
 				filename += '_clock_in.jpg'
 			} else {
 				filename += '_clock_out.jpg'
 			}
 
-			formData.append(
-				"face",
-				e.target.files[0],
-				filename
-			)
+			// 等比例缩放图片
+			const blob = await fileToBlobScaled(faceFile, 1000, 1000, 0.7)
 
+			console.log('压缩大小', blob.size)
+			console.log('原图大小', faceFile.size)
+
+			// 发送现有图片文件
+			formData.append("face", blob, filename)
+			// 当前用户注册时的标准头像的路径
 			formData.append("userFace", this.currUser.face)
 
 			this.props.clockStore.faceCheck(formData)
