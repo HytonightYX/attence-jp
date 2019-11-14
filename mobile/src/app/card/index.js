@@ -7,6 +7,7 @@ import 'react-html5-camera-photo/build/css/index.css'
 
 import getPosition from '@util/pos'
 import * as DT from '@util/date'
+import EXIF from '@util/small-exif'
 import fileToBlobScaled from '@util/fileToBlobScaled'
 import { CARD_MARK, CLOCK_STATUS as clock_status } from '@constant/data'
 
@@ -146,6 +147,8 @@ class Card extends React.Component {
 		this.props.clockStore.clockIn(params)
 			.then(r => {
 				message.success(r.msg, 0.7)
+			})
+			.finally(() => {
 				this.props.clockStore.setFaceCheckStatus('before')
 				this.setState({loading: false})
 			})
@@ -161,10 +164,11 @@ class Card extends React.Component {
 			rest_time: this.state.rest,
 			company: this.state.comp
 		}
-
+		this.setState({loading: true})
 		if (this.faceCheckStatus === 'pass') {
 			this.props.clockStore.clockOut(params)
 				.then(r => message.success(r.msg, 0.7))
+				.finally(() => this.setState({loading: false}))
 		}
 	}
 
@@ -176,8 +180,10 @@ class Card extends React.Component {
 	doUploadFace = async (e) => {
 		if (e.target.files.length > 0) {
 			const faceFile = e.target.files[0]
+			let that = this
 			let formData = new FormData()
 			let filename = `${this.clockInfo.uid}`
+			let orientation = -1
 
 			if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
 				filename += '_clock_in.jpg'
@@ -185,30 +191,31 @@ class Card extends React.Component {
 				filename += '_clock_out.jpg'
 			}
 
-			// 等比例缩放图片
-			const blob = await fileToBlobScaled(faceFile, 1000, 1000, 0.7)
+			EXIF.getData(faceFile, async function () {
+				orientation = await EXIF.getTag(this, "Orientation");
 
-			console.log('压缩大小', blob.size)
-			console.log('原图大小', faceFile.size)
+				// 等比例缩放图片
+				const blob = await fileToBlobScaled(faceFile, 1000, 1000, 0.7, orientation)
 
-			// 发送现有图片文件
-			formData.append("face", blob, filename)
-			// 当前用户注册时的标准头像的路径
-			formData.append("userFace", this.currUser.face)
+				// 发送现有图片文件
+				formData.append("face", blob, filename)
+				// 当前用户注册时的标准头像的路径
+				formData.append("userFace", that.currUser.face)
 
-			this.props.clockStore.faceCheck(formData)
-				.then(ret => {
-					if (ret.code === 200) {
-						message.success('人脸验证成功')
-						if (this.clockInfo.clock_status === clock_status.CLOCK_INIT) {
-							this.setState({clockInImg: urls.HOST_IMG + ret.data.path})
+				that.props.clockStore.faceCheck(formData)
+					.then(ret => {
+						if (ret.code === 200) {
+							message.success('人脸验证成功')
+							if (that.clockInfo.clock_status === clock_status.CLOCK_INIT) {
+								that.setState({clockInImg: urls.HOST_IMG + ret.data.path})
+							} else {
+								that.setState({clockOutImg: urls.HOST_IMG + ret.data.path})
+							}
 						} else {
-							this.setState({clockOutImg: urls.HOST_IMG + ret.data.path})
+							message.error('人脸验证失败，请重试', 0.7)
 						}
-					} else {
-						message.error('人脸验证失败，请重试', 0.7)
-					}
-				})
+					})
+			})
 		}
 	}
 
