@@ -43,3 +43,10 @@ export const CARD_MARK = {
       label: <strong>60分钟</strong>,
      }
 }
+
+export const CLOCK_STATUS = {
+  CLOCK_INIT: 0,
+  CLOCK_IN: 1,
+  CLOCK_OUT: 2,
+  CLOCK_DONE: 3
+}
