@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Form, Table, Input, Button, Divider, message } from 'antd'
+import { Icon, Form, Table, Input, Button,Skeleton, Modal, Tag, Divider, message } from 'antd'
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
@@ -72,18 +72,51 @@ class Login extends React.Component {
 
 	async componentWillMount() {
     this.setState({ loading: true })
-    let userlist = await this.props.userStore.getUserList()
-    console.log(userlist)
-    this.setState({ loading: false, userlist:userlist.data })
+    let r = await this.props.userStore.getUserList()
+    this.setState({ loading: false, userlist:r.data })
+  }
+
+  doStatus = async (record,status)=>{
+		this.setState({ loading: true })
+    let r = await this.props.userStore.setUserActive(record,status)
+    this.setState({ loading: false, userlist:r.data })
+  }
+
+  
+
+  doSetPos = (record,pos)=>{
+    this.setState({ visible: true, uid:record.key, pos: pos });
+  }
+
+  handleOk = async () => {
+    this.setState({ loading: true })
+    let r = await this.props.userStore.setUserPos({uid:this.state.uid, pos: this.state.pos})
+    this.setState({ loading: false, visible: false, userlist:r.data })
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  doDetail = ()=>{
+  	
   }
 
 	render() {
 		let userlist = this.state.userlist
-		
+		let host = 'https://manqc.site/'
+		const {succ,visible, loading} = this.state
 
 		const columns = [{
+        title: '头像',
+        dataIndex: 'face',
+        render: d => <span className="m-face"><img src={ `${host}${d}` } alt=""/></span>
+      },{
         title: '用户名',
         dataIndex: 'name',
+      },{
+        title: 'email',
+        dataIndex: 'email',
       },{
         title: '联系方式',
         dataIndex: 'phone',
@@ -93,6 +126,31 @@ class Login extends React.Component {
       },{
         title: '职位',
         dataIndex: 'position',
+        render: d => <span className="m-status">
+        	{ d=='社长' && <Tag color="#f50"> {d}</Tag> } 
+        	{ d=='部长' && <Tag color="#108ee9">{d}</Tag> }
+        	{ d=='员工' && <Tag color="#87d068">{d}</Tag> }
+        </span>
+      },{
+        title: '状态',
+        dataIndex: 'status',
+        render: d => <span className="m-status">
+        	{ d==1 && <Tag color="red"> 正常</Tag> } 
+        	{ d==0 && <Tag color="blue">未激活</Tag> }
+        	{ d==2 && <Tag color="black">离职</Tag> }
+        </span>
+      },{
+        title: '功能',
+        key: 'action',
+        render: (text, record, index) => (
+        	<div className="m-fun">
+        		<Button size="small" className="m-blue" onClick={this.doDetail.bind(this,record)}>详情</Button>
+	          <Button size="small" className="c-green" onClick={this.doStatus.bind(this,record,1)}>激活</Button>
+	          <Button size="small" className="c-black" onClick={this.doStatus.bind(this,record,2)}>离职</Button>
+	          <Button size="small" className="c-orange" onClick={this.doSetPos.bind(this,record,'部长')}>任部长</Button>
+	          <Button size="small" className="c-orange" onClick={this.doSetPos.bind(this,record,'社长')}>任社长</Button>
+        	</div>
+        ),
       },
     ];
 
@@ -100,11 +158,19 @@ class Login extends React.Component {
 		return (
 			<div className='g-user'>
 				<div className="m-userlist">
-					
-
-					<Table size='small' dataSource={userlist} columns={columns} />;
-
+					<Skeleton active loading={this.state.loading}>
+						<Table size='small' dataSource={userlist} columns={columns} />
+					</Skeleton>
 				</div>
+
+				<Modal
+          visible={visible}
+          onOk={this.handleOk}
+          confirmLoading={loading}
+          onCancel={this.handleCancel} 
+        >
+          <p>确认提交任命<span className="m-strong">{this.state.pos}</span>职位?</p>
+        </Modal>
 			</div>
 		)
 	}

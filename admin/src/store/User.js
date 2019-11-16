@@ -16,6 +16,25 @@ class User {
 		}
 	}
 
+  @action
+  async setUserActive(params,status) {
+    const r = await axios.post(urls.API_USER_ACTIVE,{id: params.key, status: status})
+    if (r && r.status === 200) {
+      return r.data
+    }
+  }
+
+  @action
+  async setUserPos(params) {
+    const r = await axios.post(urls.API_USER_POS,params)
+    if (r && r.status === 200) {
+      return r.data
+    }
+  }
+
+
+  
+
 }
 
 export default new User()

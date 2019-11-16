@@ -25,7 +25,7 @@ class NavWrapper extends React.Component {
     return (
       <Layout className="g-menu">
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="m-logo">加梯管理系统</div>
+          <div className="m-logo">勤怠后台管理系统</div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
             {MENU_MAIN.map((item,j)=>
                 <Menu.Item key={j}>
