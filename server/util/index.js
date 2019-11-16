@@ -1,4 +1,5 @@
 const moment = require('moment')
+const db = require('../db/db')
 
 /**
  * 转换 整形时间戳（YYYYMMDDhhmmss） to YYYY/MM/DD or YYYY/MM/DD HH/MM/SS
@@ -23,7 +24,18 @@ const newDateTime = (format='YYYYMMDDhhmmss') => {
 	return moment(new Date()).format(format)
 }
 
+const callProc = (sql, params, res, cb)=>{
+	db.procedureSQL(sql, JSON.stringify(params), (err, ret) => {
+		if (err) {
+			res.status(500).json({code: -1, msg: '提交请求失败，请联系管理员！', data: null})
+		} else {
+			cb(ret)
+		}
+	})
+}
+
 module.exports = {
 	formatTS,
-	newDateTime
+	newDateTime,
+	callProc,
 }

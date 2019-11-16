@@ -1,0 +1,167 @@
+
+body {
+  -webkit-font-smoothing: antialiased;
+  /*font-family: 'Hiragino Kaku Gothic ProN', YuGothic, 'Yu Gothic Medium', Meiryo, sans-serif;*/
+  color: #3C4E65;
+  padding: 0;
+  margin: 0;
+  font-family: Avenir , "Open Sans" , "Helvetica Neue" , Helvetica , Arial , Verdana , Roboto , "游ゴシック" , "Yu Gothic" , "游ゴシック体" , "YuGothic" , "ヒラギノ角ゴ Pro W3" , "Hiragino Kaku Gothic Pro" , "Meiryo UI" , "メイリオ" , Meiryo , "ＭＳ Ｐゴシック" , "MS PGothic" , sans-serif;
+}
+
+a {
+  color: #333;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+button + button {
+    margin-left: 5px;
+}
+
+.c-blue {
+  background: #3d74aa!important;
+  color: #fff!important;
+  border: 1px solid #3d74aa!important;
+}
+
+.c-yell {
+  background: #c6b065!important;
+  color: #fff!important;
+  border: 1px solid #c6b065!important;
+}
+
+.c-grey {
+    background: #FAFBFC !important;
+    color: #666!important;
+    border: 1px solid #FAFBFC!important;
+}
+
+.c-black {
+    background: #666 !important;
+    color: #fff!important;
+    border: 1px solid #666!important;
+}
+
+.c-green {
+  background: #269F9A!important;
+  color: #fff!important;
+  border: 1px solid #269F9A!important;
+}
+
+
+.fn-hide {
+  display: none!important
+}
+
+.fn-show {
+  display: block!important
+}
+
+
+.m-icon {
+  fontSize: 16px;
+  height: 18px;
+  margin-right:5px;
+}
+
+
+
+.m-del {
+  position: absolute;
+    height: 17px;
+    width: 17px;
+    border-radius: 10px;
+    background: #333;
+    right: -9px;
+    top: -9px;
+    cursor: pointer;
+    transition: 0.5s;
+    z-index: 999;
+    color: #fff;
+}
+
+.m-del:before, .m-del:after {
+    content: ' ';
+    position: absolute;
+    right: 8px;
+    top: 4px;
+    border-left: 1px solid #eee;
+    height: 10px;
+    width: 0;
+}
+
+.m-del:before {
+  transform: rotate(45deg);
+}
+
+.m-del:after {
+  transform: rotate(-45deg);
+}
+
+.input-select, .input-text, .input-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  outline: none;
+  padding: 0.8em;
+  color: #666;
+  background: #fff;
+  height: 40px;
+}
+
+.input-btn {
+  font-size: 16px;
+  height: 40px;
+}
+
+.input-btn-inverse {
+  color: #3d74aa;
+  background-color: #ffffff;
+}
+
+.input-center {
+  text-align: center;
+}
+
+/* 移动端重载 antd 时间选择CSS */
+.ant-calendar-input-wrap {
+  //display: none;
+}
+
+.ant-calendar {
+  width: 100%;
+}
+
+.ant-calendar-picker-container {
+  width: calc( 100% - 40px );
+  //left: 10px!important;
+  //margin: 10px;
+}
+
+.c-camera-feed__viewer {
+  width: 350px;
+  height: 450px;
+  border: 1px solid #000000;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.face-drawer {
+  padding: 0;
+}
+
+.ant-skeleton.ant-skeleton-active {
+    padding: 10px;
+}
+
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  //padding: 6px 12px;
+  cursor: pointer;
+}

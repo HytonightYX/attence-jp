@@ -26,6 +26,9 @@ faceDetectionOptions = getFaceDetectorOptions(faceDetectionNet);
 async function faceDetect(REF_IMG,QRY_IMG) {
   try {
 
+    console.log('ref'+REF_IMG)
+    console.log('qry'+QRY_IMG)
+
 	  // 加载68pix模型
 	  await faceDetectionNet.loadFromDisk('./weights')
 	  await faceapi.nets.faceLandmark68Net.loadFromDisk('./weights')
@@ -55,7 +58,7 @@ async function faceDetect(REF_IMG,QRY_IMG) {
 		return ret
 	}catch (error) { 
    // your catch block code goes here
-   console.log(err)
+   console.log(error)
    return 1
   }
 }

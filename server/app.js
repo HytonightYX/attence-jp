@@ -7,10 +7,13 @@ const axios = require('axios')
 const formidable = require('formidable')
 const moment = require('moment')
 const compression = require('compression')
+const https = require('https')
 
 const db = require('./db/db')
 const utils = require('./util')
 const face = require('./util/face')
+
+const admin = require('./routes/admin');
 
 const app = express()
 const port = 8080
@@ -26,6 +29,9 @@ app.get('*.js', function (req, res, next) {
 	res.set('Content-Encoding', 'gzip')
 	next()
 })
+
+
+app.use('/admin', admin);
 
 function callProc(sql, params, res, cb) {
 	db.procedureSQL(sql, JSON.stringify(params), (err, ret) => {
@@ -212,6 +218,8 @@ app.post('/FaceCheck', async function (req, res) {
 	})
 
 	form.on('file', async (name, file) => {
+		console.log(REF_IMG)
+		console.log(file.path)
 		const ret = await face.faceDetect(REF_IMG, file.path)
 		// const ret = ['true']
 		if (ret[0]) {
@@ -223,3 +231,9 @@ app.post('/FaceCheck', async function (req, res) {
 })
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
+
+// var options = {
+//   key:fs.readFileSync('/usr/local/key/1897739_manqc.site.key'),
+//   cert:fs.readFileSync('/usr/local/key/1897739_manqc.site.pem')
+// }
+// https.createServer(options,app).listen(443)
