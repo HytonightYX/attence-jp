@@ -183,12 +183,11 @@ app.post('/FaceUpload', async function (req, res) {
 	form.parse(req)
 
 	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Face_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+		file.path = 'upload/' + `Face_${moment(new Date()).format('YYYYMMDDhhmmss')}.jpg`
 	})
 
 	form.on('file', (name, file) => {
+		console.log(file)
 		res.status(200).json({
 			code: 200,
 			msg: '上传照片成功',

@@ -3,27 +3,32 @@ import { Form, Icon, Result, Button, Input, Steps, message, Select, Upload } fro
 import { inject, observer } from 'mobx-react'
 import MDatePicker from 'react-mobile-datepicker'
 import moment from 'moment'
-
+import EXIF from '@util/small-exif'
 import { USER_TYPE } from '@constant/data'
 import * as urls from '@constant/urls'
 import * as DT from '@util/date'
+import fileToBlobScaled from '@util/fileToBlobScaled'
 import './index.less'
 
 const {TextArea} = Input
 const {Option} = Select
 
-function beforeUpload(file) {
-	const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-	if (!isJpgOrPng) {
-		message.error('You can only upload JPG/PNG file!')
-	}
-	const isLt2M = file.size / 1024 / 1024 < 2
-	if (!isLt2M) {
-		message.error('Image must smaller than 2MB!')
-	}
-	return isJpgOrPng && isLt2M
-}
+async function beforeUpload(file) {
+	return new Promise((resolve, reject) => {
+		const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+		if (!isJpgOrPng) {
+			message.error('只能上传 jpg 和 png 格式的图片！')
+			reject(new Error('只能上传 jpg 和 png 格式的图片！'))
+		}
 
+		EXIF.getData(file, async () => {
+			let orientation = await EXIF.getTag(file, "Orientation")
+			// 等比例缩放图片
+			const blob = await fileToBlobScaled(file, 1000, 1000, 0.7, orientation)
+			resolve(blob)
+		})
+	})
+}
 
 @inject('userStore')
 @observer
@@ -314,7 +319,8 @@ class Register extends React.Component {
 											beforeUpload={beforeUpload}
 											onChange={this.handleChange}
 										>
-											{imageUrl ? <img src={urls.HOST_IMG + imageUrl} alt="avatar" style={{width: '100%'}}/> : uploadButton}
+											{imageUrl ?
+												<img src={urls.HOST_IMG + imageUrl} alt="avatar" style={{width: '100%'}}/> : uploadButton}
 										</Upload>
 									</div>
 								)}
