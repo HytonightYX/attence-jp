@@ -29,6 +29,7 @@ class Cset extends React.Component {
     }
     this.setState({ loading: true })
     let sche = await this.props.confStore.loadCardSche(params)
+    console.log(sche)
     this.setState({ loading: false, start: sche.clock_in, end:sche.clock_out, comp: sche.comp, rest:sche.rest })
   }
 

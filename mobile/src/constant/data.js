@@ -18,6 +18,17 @@ export const USER_TYPE = [
   {id: 1005, name: '??社员'},
 ]
 
+export const LEAVE_TYPE = ['旷工','病假','加班','事欠','有休','代休','其他']
+export const leaveIndex = (d)=>{
+  let ret = -1 
+  LEAVE_TYPE.forEach((item,index)=>{
+    if (d===item) {
+      ret = index
+    }
+  })
+  return ret
+}
+
 
 export const CARD_MARK = {
   0: {

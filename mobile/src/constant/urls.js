@@ -10,7 +10,8 @@ export const API_USER_FACE_CHECK     = API_SERVER + '/FaceCheck'
 
 
 /* Leave 相关 API */
-export const API_LEAVE_UPLOAD = API_SERVER + '/UploadFile'
+export const API_LEAVE_UPLOAD      = API_SERVER + '/UploadFile'
+export const API_LEAVE_APPLY_LEAVE = API_SERVER + '/leave/ApplyLeave'
 
 
 
