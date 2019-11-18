@@ -16,6 +16,13 @@ class Leave {
     return r
   }
 
+  @action
+  async applyLeave(params) {
+    const r = await axios.post(urls.API_LEAVE_APPLY_LEAVE, params)
+    
+    return r
+  }
+
 }
 
 export default new Leave()

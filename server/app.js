@@ -13,6 +13,7 @@ const db = require('./db/db')
 const utils = require('./util')
 const face = require('./util/face')
 
+const leave = require('./routes/leave');
 const admin = require('./routes/admin');
 
 const app = express()
@@ -31,7 +32,9 @@ app.get('*.js', function (req, res, next) {
 })
 
 
-app.use('/admin', admin);
+app.use('/admin', admin)
+app.use('/leave', leave)
+
 
 function callProc(sql, params, res, cb) {
 	db.procedureSQL(sql, JSON.stringify(params), (err, ret) => {
@@ -169,8 +172,6 @@ app.post('/UploadFile', async function (req, res) {
 		})
 	})
 })
-
-
 
 
 /**

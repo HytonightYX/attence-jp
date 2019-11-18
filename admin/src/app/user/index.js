@@ -17,6 +17,7 @@ class Login extends React.Component {
 		this.state = {
 			loading: false,
 			userlist: [],
+      visible: false,
 		}
 	}
 
@@ -99,7 +100,7 @@ class Login extends React.Component {
   }
 
   doDetail = ()=>{
-  	
+
   }
 
 	render() {
@@ -147,6 +148,7 @@ class Login extends React.Component {
         		<Button size="small" className="m-blue" onClick={this.doDetail.bind(this,record)}>详情</Button>
 	          <Button size="small" className="c-green" onClick={this.doStatus.bind(this,record,1)}>激活</Button>
 	          <Button size="small" className="c-black" onClick={this.doStatus.bind(this,record,2)}>离职</Button>
+	          <Button size="small" className="c-orange" onClick={this.doSetPos.bind(this,record,'员工')}>任员工</Button>
 	          <Button size="small" className="c-orange" onClick={this.doSetPos.bind(this,record,'部长')}>任部长</Button>
 	          <Button size="small" className="c-orange" onClick={this.doSetPos.bind(this,record,'社长')}>任社长</Button>
         	</div>

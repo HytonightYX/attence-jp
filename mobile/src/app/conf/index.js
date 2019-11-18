@@ -102,10 +102,10 @@ class Conf extends React.Component {
                 </div>
               </div>
               <div className="m-col">
-                <label>残業手当</label>
+                <label>残業次数</label>
                 <div className="m-val-wrap">
-                  <span className="m-mul-bd">24,984</span>
-                  <span className="m-mul-unit">円</span>
+                  <span className="m-mul-bd">24</span>
+                  <span className="m-mul-unit">次</span>
                 </div>
               </div>
             </div>
