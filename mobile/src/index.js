@@ -11,9 +11,12 @@ import injects from './store'
 import App from './App'
 
 import './less/global.less'
-import './less/variables.less';
+import './less/variables.less'
 
 configure({enforceActions: 'observed'})
+
+/* polyfill: 安卓部分老版本游览器缺失 promise.prototype.finally 方法 */
+require('promise.prototype.finally').shim()
 
 ReactDOM.render(
 	<Provider {...injects}>
