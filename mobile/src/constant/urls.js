@@ -20,6 +20,10 @@ export const API_CONF_SAVE_CARDSCHE = API_SERVER + '/SaveCardSche'
 export const API_CONF_LOAD_CARDSCHE = API_SERVER + '/LoadCardSche'
 
 
+/* Comp 相关 API */
+export const API_COMP_POS_LIST = API_SERVER + '/CompPosList'
+export const API_COMP_DEPT_LIST = API_SERVER + '/CompDeptList'
+
 
 
 

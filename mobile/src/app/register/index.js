@@ -9,6 +9,7 @@ import * as urls from '@constant/urls'
 import * as DT from '@util/date'
 import fileToBlobScaled from '@util/fileToBlobScaled'
 import './index.less'
+import { computed, toJS } from 'mobx'
 
 const {TextArea} = Input
 const {Option} = Select
@@ -22,7 +23,7 @@ async function beforeUpload(file) {
 		}
 
 		EXIF.getData(file, async () => {
-			let orientation = await EXIF.getTag(file, "Orientation")
+			let orientation = await EXIF.getTag(file, 'Orientation')
 			// 等比例缩放图片
 			const blob = await fileToBlobScaled(file, 1000, 1000, 0.7, orientation)
 			resolve(blob)
@@ -30,7 +31,7 @@ async function beforeUpload(file) {
 	})
 }
 
-@inject('userStore')
+@inject('userStore', 'compStore')
 @observer
 class Register extends React.Component {
 
@@ -42,7 +43,16 @@ class Register extends React.Component {
 		regVal: null,
 		step: 1,
 		showDatePicker: false,
-		faceUploading: false
+		faceUploading: false,
+	}
+
+	async componentDidMount() {
+		await this.props.compStore.loadCompInfo()
+	}
+
+	@computed
+	get compInfo() {
+		return this.props.compStore.compInfo
 	}
 
 	handleCancel = () => {
@@ -141,12 +151,12 @@ class Register extends React.Component {
 	}
 
 	render() {
-		const {getFieldDecorator, getFieldValue, setFieldsValue} = this.props.form
-		const {succ, visible, loading, step, faceUploading, imageUrl} = this.state
+		const {getFieldDecorator, getFieldValue} = this.props.form
+		const {succ, loading, step, faceUploading, imageUrl} = this.state
+		const {deptList, posList} = this.compInfo
+		console.log(toJS(this.compInfo))
 		const totStep = 4
 		const compList = ['bizplus']
-		const deptList = ['部门1', '部门2', '部门3']
-		const positionList = ['职位1', '职位2', '职位3']
 
 		const uploadButton = (
 			<div>
@@ -250,7 +260,7 @@ class Register extends React.Component {
 										initialValue: 'bizplus'
 									})(
 										<Select size='large' placeholder='请选择公司...'>
-											{compList.map((item) => (
+											{compList && compList.map((item) => (
 												<Option value={item} key={item}>{item}</Option>
 											))}
 										</Select>
@@ -268,11 +278,10 @@ class Register extends React.Component {
 								<Form.Item label="部门">
 									{getFieldDecorator('dept', {
 										rules: [{required: true, message: '请选择部门！'}],
-										initialValue: '部门1'
 									})(
 										<Select size='large' placeholder='请选择部门...'>
-											{deptList.map((item) => (
-												<Option value={item} key={item}>{item}</Option>
+											{deptList && deptList.map((item) => (
+												<Option value={item.dept_code} key={item.dept_code}>{item.dept_name}</Option>
 											))}
 										</Select>
 									)}
@@ -280,11 +289,10 @@ class Register extends React.Component {
 								<Form.Item label="职位">
 									{getFieldDecorator('position', {
 										rules: [{required: true, message: '请选择职位！'}],
-										initialValue: '职位1'
 									})(
 										<Select size='large' placeholder='请选择职位...'>
-											{positionList.map((item, index) => (
-												<Option value={item} key={item}>{item}</Option>
+											{posList && posList.map((item) => (
+												<Option value={item.pos_code} key={item.pos_code}>{item.pos_name}</Option>
 											))}
 										</Select>
 									)}
@@ -292,9 +300,8 @@ class Register extends React.Component {
 								<Form.Item label="社员类型">
 									{getFieldDecorator('type', {
 										rules: [{required: true, message: '请选择社员类型！'}],
-										initialValue: 1001
 									})(
-										<Select size='large' placeholder='请选择职位...'>
+										<Select size='large' placeholder='请选择社员类型...'>
 											{USER_TYPE.map((item) => (
 												<Option value={item.id} key={item.id}>{item.name}</Option>
 											))}
