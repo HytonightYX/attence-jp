@@ -234,6 +234,28 @@ app.post('/FaceCheck', async function (req, res) {
 	})
 })
 
+/**
+ * 取公司部门信息
+ */
+app.get('/CompDeptList', async function (req, res) {
+	let sql = `CALL PROC_COMP_DEPT_LIST`
+
+	callProc(sql, {}, res, (r) => {
+		res.status(200).json({code: 200, data: r})
+	})
+})
+
+/**
+ * 取公司职位信息
+ */
+app.get('/CompPosList', async function (req, res) {
+	let sql = `CALL PROC_COMP_POS_LIST`
+
+	callProc(sql, {}, res, (r) => {
+		res.status(200).json({code: 200, data: r})
+	})
+})
+
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
 // var options = {

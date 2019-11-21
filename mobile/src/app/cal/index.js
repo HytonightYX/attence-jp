@@ -36,7 +36,8 @@ class Cal extends React.Component {
 		super(props)
     this.date = new Date()
 		this.state = {
-			loading: false,
+			loading_cal: false,
+      loading_del: false,
       visible: false,
       mini: false,
       cardList: [],
@@ -48,6 +49,7 @@ class Cal extends React.Component {
   async componentDidMount() {
     let year  = moment(new Date()).year()
     let month = moment(new Date()).month()+1
+    let date  = moment(new Date()).date()
     let from  = parseInt(`${year}${month}00000000`)
     let to    = parseInt(`${year}${month}31000000`)
     let params = {
@@ -55,10 +57,12 @@ class Cal extends React.Component {
       from: from,
       to: to,
     }
-    this.setState({ loading: true })
+    this.setState({ loading_cal: true })
     let r = await this.props.calStore.getCardByMonth(params)
     // console.log(r)
-    this.setState({ loading: false, cardList: r.data.data})
+    this.setState({ loading_cal: false, cardList: r.data.data})
+
+    this.doDetail(null, date)
   }
 
   dateCellRender=(e)=>{
@@ -90,10 +94,10 @@ class Cal extends React.Component {
     let month = moment(new Date()).month()+1
     let date  = parseInt(`${year}${month}${day}000000`)
 
-    this.setState({ loading: true })
+    this.setState({ loading_del: true })
     let r = await this.props.calStore.getCardByDay({day:date, uid: this.props.userStore.currUser.id })
     console.log(r)
-    this.setState({ loading: false, card: r.data.data.card, leave: r.data.data.leave})
+    this.setState({ loading_del: false, card: r.data.data.card, leave: r.data.data.leave})
   }
 
   doSlide=()=>{
@@ -104,76 +108,80 @@ class Cal extends React.Component {
 	render() {
     let { mini,card,leave } = this.state
 
-    console.log('leave'+leave)
-    console.log('card'+card)
     let line = caluLine()
     let calanderCls = mini?`m-calendar m-mini m-mini-l${line}`:`m-calendar`
 
 		return (
 			<div className='g-cal'>
         <div className="m-cal">
-          <div className={calanderCls}>
+          <Skeleton active loading={this.state.loading_cal}>
+            <div className={calanderCls}>
             <Calendar fullscreen={false} dateCellRender={this.dateCellRender}/>
             <div className="m-slide" onClick={this.doSlide}>
               { mini && <Icon type="down" /> }
               { !mini && <Icon type="up" /> }
             </div>
-          </div>
+            </div>
+          </Skeleton>
 
-          <div className="m-card">
-            {card.map((item,index)=>
-              <div className="m-card-item">
-                <div className="m-card-tl">
-                  <label>お客様名: {item.company}</label>
-                  <span>休憩時間: {item.rest_time}</span>
-                </div>
-                <div className="m-card-time">
-                  <div className="m-mark"></div>
-                  <div className="m-line"></div>
-                  <label>
-                    <Icon type="clock-circle"/>
-                    {DT.formatCardTime(item.clock_in)}
-                  </label>
-                  <span>
-                    <Icon type="environment"/>
-                    {item.clock_in_loc}
-                  </span>
-                </div>
-                <div className="m-card-time">
-                  <div className="m-mark"></div>
-                  <label>
-                    <Icon type="clock-circle"/>
-                    {DT.formatCardTime(item.clock_out)}
-                  </label>
-                  <span>
-                    <Icon type="environment"/>
-                    {item.clock_out_loc}
-                  </span>
-                </div>
-              </div>
-              )}
-          </div>
-
-          <div className="m-leave">
-            {leave.map((item,index)=>
-              <div className="m-leave-item">
-                <div className="m-leave-tl">
-                  <div className="m-type">{LEAVE_TYPE[item.type]}</div>
-                  <div className="m-time">
-                    {DT.formatLeaveTime(item.from)} - {DT.formatLeaveTime(item.to)}
+          <Skeleton active loading={this.state.loading_del}>
+            <div className="m-info-card">
+              {card.map((item,index)=>
+                <div className="m-card-item">
+                  <div className="m-card-tl">
+                    <label>お客様名: {item.company}</label>
+                    <span>休憩時間: {item.rest_time}</span>
                   </div>
-                  <div className="m-dur">{item.dur}</div>
+                  <div className="m-card-time">
+                    <div className="m-mark"></div>
+                    <div className="m-line"></div>
+                    <label>
+                      <Icon type="clock-circle"/>
+                      {DT.formatCardTime(item.clock_in)}
+                    </label>
+                    <span>
+                      <Icon type="environment"/>
+                      {item.clock_in_loc}
+                    </span>
+                  </div>
+                  <div className="m-card-time">
+                    <div className="m-mark"></div>
+                    <label>
+                      <Icon type="clock-circle"/>
+                      {DT.formatCardTime(item.clock_out)}
+                    </label>
+                    <span>
+                      <Icon type="environment"/>
+                      {item.clock_out_loc}
+                    </span>
+                  </div>
                 </div>
-                <div className="m-reason">
-                  {item.reason}
+                )}
+            </div>
+
+            <div className="m-info-leave">
+              {leave.map((item,index)=>
+                <div className="m-leave-item">
+                  <div className="m-leave-tl">
+                    <div className="m-type">{LEAVE_TYPE[item.type]}</div>
+                    <div className="m-time">
+                      {DT.formatLeaveTime(item.from)} - {DT.formatLeaveTime(item.to)}
+                    </div>
+                    <div className="m-dur">{item.dur}</div>
+                  </div>
+                  <div className="m-reason">
+                    {item.reason}
+                  </div>
+                  <div className="m-img"></div>
                 </div>
-                <div className="m-img"></div>
-              </div>
-              )}
+                )}
+            </div>
+          </Skeleton>
+
+          <div className="m-submit">
+            <Button type="primary" icon="schedule" block>提交月报</Button>
           </div>
         </div>
-        
-        
 			</div>
 		)
 	}

@@ -4,6 +4,7 @@ import clockStore    from './Clock'
 import confStore     from './Conf'
 import leaveStore    from './Leave'
 import calStore      from './Cal'
+import compStore     from './Comp'
 
 export default {
 	languageStore,
@@ -12,4 +13,5 @@ export default {
   confStore,
   leaveStore,
   calStore,
+	compStore,
 }

@@ -40,15 +40,21 @@ export default async function fileToBlobScaled(file, limitWidth, limitHeight, qu
 			// 代表用户竖着iphone自拍
 			canvas.width = newWidth
 			canvas.height = newHeight
-			ctx.rotate(Math.PI);
+			ctx.rotate(Math.PI)
 			ctx.drawImage(drawable, 0 - newWidth, 0 - newHeight, newWidth, newHeight)
 			break
 		case 6:
 			// 代表用户横着iphone自拍，且摄像头在左侧
 			canvas.width = newHeight
 			canvas.height = newWidth
-			ctx.rotate(Math.PI / 2);
-			ctx.drawImage(drawable,0 , 0 - newHeight, newWidth, newHeight)
+			ctx.rotate(Math.PI / 2)
+			ctx.drawImage(drawable, 0, 0 - newHeight, newWidth, newHeight)
+			break
+		case 8:
+			canvas.width = newHeight
+			canvas.height = newWidth
+			ctx.rotate(3 * Math.PI / 2)
+			ctx.drawImage(drawable, 0 - newWidth, 0, newWidth, newHeight)
 			break
 		default :
 			canvas.width = newWidth
