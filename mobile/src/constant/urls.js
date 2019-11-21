@@ -14,6 +14,11 @@ export const API_LEAVE_UPLOAD      = API_SERVER + '/UploadFile'
 export const API_LEAVE_APPLY_LEAVE = API_SERVER + '/leave/ApplyLeave'
 
 
+/* Cal 相关 API */
+export const API_CAL_GET_CARD_BY_MONTH = API_SERVER + '/cal/getCardByMonth'
+export const API_CAL_GET_CARD_BY_DAY   = API_SERVER + '/cal/getCardByDay'
+
+
 
 /* Conf 相关 API */
 export const API_CONF_SAVE_CARDSCHE = API_SERVER + '/SaveCardSche'

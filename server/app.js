@@ -13,7 +13,10 @@ const db = require('./db/db')
 const utils = require('./util')
 const face = require('./util/face')
 
+
+const api = require('./routes/api');
 const leave = require('./routes/leave');
+const cal   = require('./routes/cal');
 const admin = require('./routes/admin');
 
 const app = express()
@@ -32,8 +35,10 @@ app.get('*.js', function (req, res, next) {
 })
 
 
-app.use('/admin', admin)
+app.use('/api',   api)
 app.use('/leave', leave)
+app.use('/cal',   cal)
+app.use('/admin', admin)
 
 
 function callProc(sql, params, res, cb) {
@@ -80,7 +85,6 @@ app.post('/Login', async function (req, res) {
 	let params = req.body
 
 	callProc(sql, params, res, (users) => {
-		console.log(users)
 		if ((users.length > 0)&&(users[0].status===1)) {
 			res.status(200).json({code: 200, data: users[0], msg: '登录成功'})
 		} else if ((users.length > 0)&&(users[0].status===0)){

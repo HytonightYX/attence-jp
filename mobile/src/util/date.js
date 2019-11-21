@@ -13,6 +13,24 @@ export const TIME_FORMAT_L = 'HH:mm:ss'
 export const DATE_FORMAT   = 'YYYY/MM/DD'
 
 
+export let formatLeaveTime =(time)=>{
+	
+	let t = moment(time).format('MM/DD HH:mm')
+	return t
+}
+
+export let formatCardTime =(str)=>{
+	console.log(str)
+	if (str===null) {
+		return `00:00`
+	}
+
+	let hh = str.toString().substr(8,2)
+	let mm = str.toString().substr(10,2)
+	return `${hh}:${mm}`
+}
+
+
 export let durationDays = (from, to)=>{
 	let _from = moment(from)
 	let _to = moment(to)

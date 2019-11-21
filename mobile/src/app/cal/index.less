@@ -1,0 +1,239 @@
+.g-cal {
+
+  
+
+
+  .ant-fullcalendar-content {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 100;
+
+    .m-card {
+      height: 95%;
+      width: 95%;
+      border-radius: 2px;
+      color: #fff;
+      z-index: -1;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+    }
+
+    .m-card-ok {
+      background: rgba(100, 200, 20, 0.4);
+    }
+
+    .m-card-miss {
+      background: rgba(255,0,0,0.2); 
+    }
+  }
+
+  .ant-fullcalendar-selected-day .ant-fullcalendar-value, .ant-fullcalendar-month-panel-selected-cell .ant-fullcalendar-value {
+    color: #fff;
+    background: #3399ff;
+    font-weight: bold;
+  }
+  .ant-fullcalendar-selected-day .ant-fullcalendar-content .m-card {
+    color: unset;
+    background: unset;
+  }
+
+
+
+
+  .ant-radio-group.ant-radio-group-outline.ant-radio-group-small {
+    display: none;
+  }
+
+  .ant-fullcalendar table {
+     height: unset; 
+     border-spacing: 2;
+  }
+
+  .ant-fullcalendar-value {
+    width: unset;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .ant-fullcalendar-today .ant-fullcalendar-value, .ant-fullcalendar-month-panel-current-cell .ant-fullcalendar-value {
+    box-shadow: unset;
+    border: 1px solid #ff0000;
+    color: #ff6600;
+    font-weight: bold;
+  }
+
+  .m-mini {
+    .ant-fullcalendar-header {
+      display: none;
+    }
+  }
+
+  .m-mini-l1 {
+    .ant-fullcalendar-table tbody tr:nth-child(n+3) {
+      display: none;
+    }
+  }
+
+  .m-mini-l2 {
+    .ant-fullcalendar-table tbody tr:nth-child(n+4) {
+      display: none;
+    }
+
+    .ant-fullcalendar-table tbody tr:first-child {
+      display: none;
+    }
+  }
+
+  .m-mini-l3 {
+    .ant-fullcalendar-table tbody tr:nth-child(n+5) {
+      display: none;
+    }
+
+    .ant-fullcalendar-table tbody tr:first-child {
+      display: none;
+    }
+
+    .ant-fullcalendar-table tbody tr:nth-child(2) {
+      display: none;
+    }
+  }
+
+  .m-mini-l4 {
+    .ant-fullcalendar-table tbody tr:nth-child(n+6) {
+      display: none;
+    }
+
+    .ant-fullcalendar-table tbody tr:first-child {
+      display: none;
+    }
+
+    .ant-fullcalendar-table tbody tr:nth-child(2) {
+      display: none;
+    }
+    .ant-fullcalendar-table tbody tr:nth-child(3) {
+      display: none;
+    }
+  }
+
+  
+
+
+  .m-calendar {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #d5d5d5;
+
+    .m-slide {
+      display: flex;
+      padding: 2px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .m-leave-item {
+    margin: 5px;
+    background: #eee;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+
+    .m-leave-tl {
+      background: #ff6600;
+      color: #fff;
+      padding: 5px;
+      display: flex;
+    }
+
+    .m-type {
+      width: 48px;
+    }
+
+    .m-dur {
+      width: 80px;
+    }
+
+    .m-time {
+      flex: 1;
+    }
+
+    .m-reason {
+      padding: 5px 10px;
+    }
+  }
+
+  .m-card-item {
+    margin: 5px;
+    background: #eee;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.2);
+  
+    .m-card-tl {
+      background: #3366cc;
+      color: #fff;
+      padding: 5px;
+      display: flex;
+
+      &>label {
+        flex: 3;
+      }
+
+      &>span {
+        flex: 1;
+      }
+    }
+
+    .m-card-time {
+      padding: 5px;
+      display: flex;
+      margin: 5px 5px 5px 25px;
+      position: relative;
+
+      .m-mark {
+        height: 9px;
+        width: 9px;
+        background: #ccc;
+        position: absolute;
+        border-radius: 12px;
+        left: -15px;
+        top: 10px;
+      }
+
+      .m-line {
+        width: 1px;
+        height: 100%;
+        background: #ccc;
+        position: absolute;
+        left: -11px;
+        top: 16px;
+      }
+
+      &:nth-child(2) {
+        border-bottom: 1px dashed #ccc;
+      }
+
+      &>label {
+        color: #ff0000;
+        font-weight: bold;
+        margin-right: 6px;
+        width: 64px;
+      }
+
+      &>span {
+        flex: 1;
+      }
+      
+      &>label>i,&>span>i {
+        color: #333;
+        margin-right: 6px;
+      }
+    }
+  }
+
+  
+}
+

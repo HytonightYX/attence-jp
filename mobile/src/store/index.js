@@ -1,9 +1,9 @@
 import languageStore from './Language'
-import userStore from './User'
-import clockStore from './Clock'
-import confStore from './Conf'
-import leaveStore from './Leave'
-
+import userStore     from './User'
+import clockStore    from './Clock'
+import confStore     from './Conf'
+import leaveStore    from './Leave'
+import calStore      from './Cal'
 
 export default {
 	languageStore,
@@ -11,4 +11,5 @@ export default {
 	clockStore,
   confStore,
   leaveStore,
+  calStore,
 }
