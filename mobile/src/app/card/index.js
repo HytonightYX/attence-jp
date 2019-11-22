@@ -9,7 +9,7 @@ import getPosition from '@util/pos'
 import * as DT from '@util/date'
 import EXIF from '@util/small-exif'
 import fileToBlobScaled from '@util/fileToBlobScaled'
-import { CARD_MARK, CLOCK_STATUS as clock_status } from '@constant/data'
+import { CARD_MARK, CLOCK_STATUS as clock_status, cardMinute } from '@constant/data'
 
 import * as urls from '@constant/urls'
 import './index.less'
@@ -115,25 +115,25 @@ class Card extends React.Component {
 		this.setState({repl: false})
 	}
 
-	doUpdateRest = () => {
-		this.setState({updateRest: true})
-	}
+	// doUpdateRest = () => {
+	// 	this.setState({updateRest: true})
+	// }
 
-	doRest = (v) => {
-		this.setState({updateRest: false, rest: v})
-	}
+	// doRest = (v) => {
+	// 	this.setState({updateRest: false, rest: v})
+	// }
 
-	doUpdateComp = () => {
-		this.setState({updateComp: true})
-	}
+	// doUpdateComp = () => {
+	// 	this.setState({updateComp: true})
+	// }
 
-	doComp = (v) => {
-		this.setState({comp: v.currentTarget.value})
-	}
+	// doComp = (v) => {
+	// 	this.setState({comp: v.currentTarget.value})
+	// }
 
-	doHideComp = (v) => {
-		this.setState({updateComp: false})
-	}
+	// doHideComp = (v) => {
+	// 	this.setState({updateComp: false})
+	// }
 
 	doClockIn = async () => {
 		let params = {
@@ -327,17 +327,12 @@ class Card extends React.Component {
 					<div className="m-ft">
 						<div className="m-tl m-company">
 							<span className="m-title-s">お客様名</span>
-							{!this.state.updateComp && <Tag color="red" onClick={this.doUpdateComp}>{comp}</Tag>}
-							{this.state.updateComp &&
-							<Input defaultValue={comp} onChange={this.doComp} onBlur={this.doHideComp}/>}
+							<span><Tag color="red">{comp}</Tag></span>
 						</div>
 						<div className="m-tl m-rest">
 							<span className="m-title-s">休憩時間</span>
-							{!this.state.updateRest && <Tag color="red" onClick={this.doUpdateRest}>{rest} 小时</Tag>}
-							{this.state.updateRest &&
-							<Slider marks={CARD_MARK} min={0} max={7} defaultValue={rest} onAfterChange={this.doRest}/>}
+							<span><Tag color="red">{cardMinute(rest)}</Tag></span>
 						</div>
-
 					</div>
 
 					<div className="m-fun">

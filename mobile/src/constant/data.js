@@ -54,6 +54,18 @@ export const CARD_MARK = {
       label: <strong>60分钟</strong>,
      }
 }
+export const cardMinute =(idx,ret=60)=>{
+  switch(idx) {
+    case 0: ret = '30分钟';break;
+    case 1: ret = '35分钟';break;
+    case 2: ret = '40分钟';break;
+    case 3: ret = '45分钟';break;
+    case 4: ret = '50分钟';break;
+    case 5: ret = '55分钟';break;
+    case 6: ret = '60分钟';break;
+  }
+  return ret;
+}
 
 export const CLOCK_STATUS = {
   CLOCK_INIT: 0,
