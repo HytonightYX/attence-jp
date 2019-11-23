@@ -70,15 +70,18 @@ class Cal extends React.Component {
     list.map((item,index)=>{
       if (DT.moreThanDay(item.from,item.to)) {
         item.type = 'd'
+        item.day=[]
+        let _from = moment(item.from).date()
+        let _to = moment(item.to).date()
+        for(let i=_from;i<_to;i++) {
+          item.day.push(i)
+        }
       }else{
         item.type = 'h'
+        item.day=[]
+        item.day.push(moment(item.from).date())
       }
-      item.day=[]
-      let _from = moment(item.from).date()
-      let _to = moment(item.to).date()
-      for(let i=_from;i<_to;i++) {
-        item.day.push(i)
-      }
+      
     })
     // console.log('list..'+ list)
   }
