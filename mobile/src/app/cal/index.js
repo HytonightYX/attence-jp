@@ -133,7 +133,8 @@ class Cal extends React.Component {
   doDetail= async(id,day)=>{
     let year  = moment(new Date()).year()
     let month = moment(new Date()).month()+1
-    let date  = parseInt(`${year}${month}${day}000000`)
+    let date = day.toString().padStart(2, '0')
+    date = parseInt(`${year}${month}${date}000000`)
 
     this.setState({ loading_del: true })
     let r = await this.props.calStore.getCardByDay({day:date, uid: this.props.userStore.currUser.id })
