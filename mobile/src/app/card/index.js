@@ -1,6 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { Icon, Tag, message, Input, Slider, Drawer, Button, TimePicker, DatePicker, Spin } from 'antd'
+import { Icon, Tag, message, Input, Modal, Slider, Drawer, Button, TimePicker, DatePicker, Spin } from 'antd'
 import { computed, toJS } from 'mobx'
 import { Redirect } from 'react-router-dom'
 import 'react-html5-camera-photo/build/css/index.css'
@@ -9,13 +9,14 @@ import getPosition from '@util/pos'
 import * as DT from '@util/date'
 import EXIF from '@util/small-exif'
 import fileToBlobScaled from '@util/fileToBlobScaled'
-import { CARD_MARK, CLOCK_STATUS as clock_status, cardMinute } from '@constant/data'
+import { CLOCK_STATUS as clock_status, cardMinute } from '@constant/data'
 
 import * as urls from '@constant/urls'
 import './index.less'
 
 var _timeHandle
 const {TextArea} = Input
+const {confirm} = Modal
 
 @inject('userStore', 'clockStore', 'confStore')
 @observer
@@ -67,16 +68,28 @@ class Card extends React.Component {
 		return this.props.clockStore.faceCheckStatus
 	}
 
-	async UNSAFE_componentWillMount() {
-		this.doTimer()
-		this.setState({loading: true})
-	}
-
 	async componentDidMount() {
+		this.setState({loading: true})
+
 		if (this.currUser) {
+
 			await this.props.clockStore.setInfo(this.currUser.id)
-			let sche = await this.props.confStore.loadCardSche({uid:this.currUser.id})
+			let sche = await this.props.confStore.loadCardSche({uid: this.currUser.id})
+			console.log('========sche==========', sche)
 			this.setState({...sche})
+
+			if (sche.uid !== 0) {
+				this.doTimer()
+			} else {
+				const history = this.props.history
+				Modal.warning({
+					title: '请先进行默认打卡设置',
+					content: '进入"设置"，"打卡默认设置"即可',
+					onOk() {
+						console.log(history.push('/cset'))
+					},
+				})
+			}
 		}
 
 		if (this.clockInfo.clock_status >= clock_status.CLOCK_IN) {
@@ -192,15 +205,15 @@ class Card extends React.Component {
 			}
 
 			EXIF.getData(faceFile, async function () {
-				orientation = await EXIF.getTag(this, "Orientation");
+				orientation = await EXIF.getTag(this, 'Orientation')
 
 				// 等比例缩放图片
 				const blob = await fileToBlobScaled(faceFile, 1000, 1000, 0.7, orientation)
 
 				// 发送现有图片文件
-				formData.append("face", blob, filename)
+				formData.append('face', blob, filename)
 				// 当前用户注册时的标准头像的路径
-				formData.append("userFace", that.currUser.face)
+				formData.append('userFace', that.currUser.face)
 
 				that.props.clockStore.faceCheck(formData)
 					.then(ret => {
@@ -220,7 +233,7 @@ class Card extends React.Component {
 	}
 
 	render() {
-		const {rest, comp, clockInSche, clockOutSche} = this.state
+		const {uid, rest, comp, clockInSche, clockOutSche} = this.state
 
 		if (!this.currUser) {
 			return <Redirect to='/login'/>
@@ -273,7 +286,8 @@ class Card extends React.Component {
 												<label htmlFor="clock-in-face-upload"><Icon type="camera"/></label>
 											}
 										</div>
-										<input id="clock-in-face-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
+										<input id="clock-in-face-upload" type="file" accept="image/*" capture="user"
+										       onChange={this.doUploadFace}/>
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
 								</> :
@@ -296,8 +310,9 @@ class Card extends React.Component {
 										<Icon type="clock-circle"/>{clockOutSche}
 										<div className="m-face"
 										     onClick={() => {
-										     	if (this.clockInfo.clock_status === clock_status.CLOCK_INIT)
-										     		message.info('请先进行上班打卡')}
+											     if (this.clockInfo.clock_status === clock_status.CLOCK_INIT)
+												     message.info('请先进行上班打卡')
+										     }
 										     }
 										>
 											{this.state.clockOutImg ?
@@ -307,7 +322,8 @@ class Card extends React.Component {
 										</div>
 										{
 											this.clockInfo.clock_status === clock_status.CLOCK_INIT ? null :
-												<input id="clock-out-face-upload" type="file" accept="image/*" capture="user" onChange={this.doUploadFace}/>
+												<input id="clock-out-face-upload" type="file" accept="image/*" capture="user"
+												       onChange={this.doUploadFace}/>
 										}
 									</div>
 									<div className="m-addr-s"><Icon type="environment"/>尚未打卡</div>
@@ -384,4 +400,5 @@ class Card extends React.Component {
 		)
 	}
 }
+
 export default Card
