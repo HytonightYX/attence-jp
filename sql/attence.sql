@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 133.167.73.231
+ Source Server         : 47.111.22.103
  Source Server Type    : MySQL
- Source Server Version : 50728
- Source Host           : 133.167.73.231:3306
+ Source Server Version : 50727
+ Source Host           : 47.111.22.103:3306
  Source Schema         : attence
 
  Target Server Type    : MySQL
- Target Server Version : 50728
+ Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 21/11/2019 10:49:58
+ Date: 23/11/2019 21:23:18
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,7 @@ CREATE TABLE `clock` (
   `clock_status` int(11) DEFAULT '0' COMMENT '打卡状态 0: 初始化 1:上班 2:下班 3:结束',
   `apdt` bigint(20) DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of clock
@@ -92,6 +92,13 @@ INSERT INTO `clock` VALUES (60, 40, 20191119000000, 20191119024400, '30.27905505
 INSERT INTO `clock` VALUES (61, 48, 20191119000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191119031258);
 INSERT INTO `clock` VALUES (62, 48, 20191120000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191120123517);
 INSERT INTO `clock` VALUES (63, 40, 20191120000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191120102550);
+INSERT INTO `clock` VALUES (64, 40, 20191121000000, 20191121083400, '30.287368937226734', '120.1107706516752', 'Xin Yi Bin Guan ( Wen Yi Xi Lu ), Xihu Qu, Hangzhou Shi, Zhejiang Sheng, 中華人民共和国', 20191121083400, '30.287368937226734', '120.1107706516752', 'Xin Yi Bin Guan ( Wen Yi Xi Lu ), Xihu Qu, Hangzhou Shi, Zhejiang Sheng, 中華人民共和国', '7', 'BIZPLUS', 0, 2, 20191121110026);
+INSERT INTO `clock` VALUES (65, 48, 20191121000000, 20191121081200, 'null', 'null', 'null', 20191121081200, 'null', 'null', 'null', '7', 'BIZPLUS', 0, 2, 20191121081054);
+INSERT INTO `clock` VALUES (66, 44, 20191121000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191121100317);
+INSERT INTO `clock` VALUES (67, 45, 20191122000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191122091457);
+INSERT INTO `clock` VALUES (69, 40, 20191123000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191123053735);
+INSERT INTO `clock` VALUES (72, 45, 20191122000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, NULL);
+INSERT INTO `clock` VALUES (73, 45, 20191123000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191123091306);
 COMMIT;
 
 -- ----------------------------
@@ -106,17 +113,18 @@ CREATE TABLE `clock_sche` (
   `rest` int(11) DEFAULT NULL,
   `comp` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of clock_sche
 -- ----------------------------
 BEGIN;
-INSERT INTO `clock_sche` VALUES (0, 0, '09:00', '18:00', 7, 'BIZPLUS');
-INSERT INTO `clock_sche` VALUES (1, 29, '09:00', '11:40', 3, 'Nexp');
+INSERT INTO `clock_sche` VALUES (1, 29, '09:01', '11:40', 3, 'Nexp');
 INSERT INTO `clock_sche` VALUES (2, 30, '09:00', '16:00', 4, 'HZNU');
 INSERT INTO `clock_sche` VALUES (3, 38, '08:50', '17:00', 4, 'HZNU');
-INSERT INTO `clock_sche` VALUES (4, 45, '08:55', '17:30', 2, '杭州师范大学');
+INSERT INTO `clock_sche` VALUES (6, 0, '09:00', '18:00', 6, 'BIZPLUS');
+INSERT INTO `clock_sche` VALUES (7, 1, '1111', '1111', 1, '1111');
+INSERT INTO `clock_sche` VALUES (8, 45, '09:30', '07:50', 5, '杭州师范大学');
 COMMIT;
 
 -- ----------------------------
@@ -226,16 +234,16 @@ CREATE TABLE `leave` (
   `audit_at` bigint(14) DEFAULT NULL COMMENT '审批时间',
   `audit_uid` int(11) DEFAULT NULL COMMENT '审批人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of leave
 -- ----------------------------
 BEGIN;
-INSERT INTO `leave` VALUES (9, 40, 2, '2019-11-17 23:13:00', '2019-11-17 23:13:00', '0小时', 'dd', NULL, 0, 20191117111333, NULL, NULL);
-INSERT INTO `leave` VALUES (10, 40, 2, '2019-11-17 23:14:00', '2019-11-17 23:14:00', '0小时', 'ppp', NULL, 0, 20191117111511, NULL, NULL);
-INSERT INTO `leave` VALUES (11, 40, 2, '2019-11-17 23:16:00', '2019-11-17 23:16:00', '0小时', 'dddd', NULL, 0, 20191117111622, NULL, NULL);
-INSERT INTO `leave` VALUES (12, 40, 2, '2019-11-17 23:17:00', '2019-11-17 23:17:00', '0小时', 'pp', NULL, 0, 20191117111747, NULL, NULL);
+INSERT INTO `leave` VALUES (12, 40, 2, '2019-11-17 20:17:00', '2019-11-17 23:17:00', '3小时', 'pp', NULL, 1, 20191117111747, 20191117111747, NULL);
+INSERT INTO `leave` VALUES (13, 40, 1, '2019-11-16 14:57:00', '2019-11-17 14:57:00', '1天(12小时)', 'aaaaa', NULL, 1, 20191114025722, 20191114025722, NULL);
+INSERT INTO `leave` VALUES (14, 40, 2, '2019-11-22 16:09:00', '2019-11-22 19:09:00', '3小时', 'bbb', NULL, 0, 20191122081003, 20191122081003, NULL);
+INSERT INTO `leave` VALUES (15, 40, 0, '2019-11-23 17:39:00', '2019-11-25 17:39:00', '3天(48小时)', '我就发哦', NULL, 1, 20191122053958, 20191123053958, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -377,20 +385,60 @@ END
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for PROC_CAL_GET_CARD_DAY
+-- Procedure structure for PROC_CAL_GET_CARD_DAYC
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `PROC_CAL_GET_CARD_DAY`;
+DROP PROCEDURE IF EXISTS `PROC_CAL_GET_CARD_DAYC`;
 delimiter ;;
-CREATE PROCEDURE `attence`.`PROC_CAL_GET_CARD_DAY`(In `data` VARCHAR(16383))
+CREATE PROCEDURE `attence`.`PROC_CAL_GET_CARD_DAYC`(In `data` VARCHAR(16383))
 BEGIN
+  DECLARE _uid  BIGINT(14) DEFAULT NULL;
+  DECLARE _day  BIGINT(14) DEFAULT NULL;
+	
+	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
+	SET _day   = CONVERT(JSON_EXTRACT(data, '$.day'), UNSIGNED);
+	select * from `clock` where clock_date=_day and uid = _uid;
+	END
+;;
+delimiter ;
 
-  DECLARE _day  int(11) DEFAULT NULL;
+-- ----------------------------
+-- Procedure structure for PROC_CAL_GET_CARD_DAYD
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `PROC_CAL_GET_CARD_DAYD`;
+delimiter ;;
+CREATE PROCEDURE `attence`.`PROC_CAL_GET_CARD_DAYD`(In `data` VARCHAR(16383))
+BEGIN
+  DECLARE _uid  BIGINT(14) DEFAULT NULL;
+  DECLARE _day  BIGINT(14) DEFAULT NULL;
 	
+	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
+	SET _day   = CONVERT(JSON_EXTRACT(data, '$.day'), UNSIGNED);
 	
-	SET _day   = CONVERT(JSON_EXTRACT(data, '$.day'), SIGNED);
+	select * from 
+		`leave` 
+	where 
+		DATE_FORMAT(`from`,'%Y%m%d000000') <=_day and 
+		DATE_FORMAT(`to`,'%Y%m%d000000') > _day and 
+		uid = _uid;
+	END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for PROC_CAL_GET_CARD_DAYL
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `PROC_CAL_GET_CARD_DAYL`;
+delimiter ;;
+CREATE PROCEDURE `attence`.`PROC_CAL_GET_CARD_DAYL`(In `data` VARCHAR(16383))
+BEGIN
+  DECLARE _uid  BIGINT(14) DEFAULT NULL;
+  DECLARE _from  BIGINT(14) DEFAULT NULL;
+	DECLARE _to   BIGINT(14) DEFAULT NULL;
 	
-	
-	select * from clock where clock_date=_day;
+	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
+	SET _from   = CONVERT(JSON_EXTRACT(data, '$.from'), UNSIGNED);
+	SET _to     = CONVERT(JSON_EXTRACT(data, '$.to'), UNSIGNED);
+	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid;
 	END
 ;;
 delimiter ;
@@ -414,6 +462,28 @@ BEGIN
 	
 	
 	select * from clock where uid = _uid and clock_date>_from and clock_date<_to;
+	END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for PROC_CAL_GET_LEAVE_MONTH
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `PROC_CAL_GET_LEAVE_MONTH`;
+delimiter ;;
+CREATE PROCEDURE `attence`.`PROC_CAL_GET_LEAVE_MONTH`(In `data` VARCHAR(16383))
+BEGIN
+
+  DECLARE _uid  BIGINT(14) DEFAULT NULL;
+	DECLARE _from BIGINT(14) DEFAULT NULL;
+	DECLARE _to   BIGINT(14) DEFAULT NULL;
+	
+	
+	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
+	SET _from   = CONVERT(JSON_EXTRACT(data, '$.from'), UNSIGNED);
+	SET _to     = CONVERT(JSON_EXTRACT(data, '$.to'), UNSIGNED);
+	
+	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid and status=1;
 	END
 ;;
 delimiter ;
@@ -566,12 +636,14 @@ CREATE PROCEDURE `attence`.`PROC_USER_CLOCK_INFO`(In `data` VARCHAR(16383))
 BEGIN
 	DECLARE uid INT(11) DEFAULT NULL;
 	DECLARE clock_date BIGINT(14) DEFAULT NULL;
+	DECLARE yesterday BIGINT(14) DEFAULT NULL;
 	DECLARE apdt BIGINT(14) DEFAULT NULL;
 	
 	DECLARE exist BIGINT UNSIGNED;
 	
 	SET uid 	= JSON_UNQUOTE(JSON_EXTRACT(data,'$.uid'));
 	SET clock_date	= JSON_UNQUOTE(JSON_EXTRACT(data,'$.clock_date'));
+	SET yesterday	= JSON_UNQUOTE(JSON_EXTRACT(data,'$.yesterday'));
 	
 	SET exist = FN_CLOCK_EXIST(uid, clock_date);
 
@@ -583,7 +655,7 @@ BEGIN
 		values(uid, clock_date, 0, 0, apdt);
 	end if;
 		
-	select * from clock where clock.uid = uid and clock.clock_date = clock_date;
+	select * from clock where clock.uid = uid and clock.clock_date = clock_date or clock.clock_date = yesterday;
 END
 ;;
 delimiter ;

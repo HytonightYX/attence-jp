@@ -14,7 +14,6 @@ export const DATE_FORMAT   = 'YYYY/MM/DD'
 
 
 export let formatLeaveTime =(time)=>{
-	
 	let t = moment(time).format('MM/DD HH:mm')
 	return t
 }
@@ -30,12 +29,33 @@ export let formatCardTime =(str)=>{
 	return `${hh}:${mm}`
 }
 
+export let moreThanDay = (from, to)=>{
+	let _from = moment(from)
+	let _to = moment(to)
+	let hour = parseInt(moment.duration(_to.diff(_from)).asHours())
+	return (hour>=24)?true:false
+}
+
+export let getDurDays = (from, to)=>{
+	let _from = moment(from)
+	let _to = moment(to)
+
+	let day = parseInt(moment.duration(_to.diff(_from)).asDays())+1
+	let _fromDate= _from.date()
+	let _toDate = _to.date()
+
+	var arr=[]
+	for(let i=_fromDate;i<_toDate-_fromDate;i++) {
+		arr.push(i)
+	}
+	return arr	
+}
 
 export let durationDays = (from, to)=>{
 	let _from = moment(from)
 	let _to = moment(to)
 
-	console.log(moment.duration(_to.diff(_from)))
+	// console.log(moment.duration(_to.diff(_from)))
 	let day = parseInt(moment.duration(_to.diff(_from)).asDays())+1
 	let hour = parseInt(moment.duration(_to.diff(_from)).asHours())
 

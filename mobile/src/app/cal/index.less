@@ -2,7 +2,7 @@
 
   padding: 0 0 120px 0;
 
-  .m-info-card, .m-info-leave {
+  .m-info-card, .m-info-leave, .m-info-leavd  {
     margin: 10px 5px;
   }
 
@@ -32,6 +32,14 @@
 
     .m-card-miss {
       background: rgba(255,0,0,0.2); 
+    }
+
+    .m-leave-day {
+      background: rgba(255, 215, 0, 0.4);
+    }
+
+    .m-leave-hour {
+      border-left: 8px solid #ff9900;
     }
   }
 
@@ -142,16 +150,37 @@
     }
   }
 
+  .m-leavd-item {
+    margin: 5px;
+    background: #eee;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+
+    .m-leavd-tl {
+      background: #ff0000;
+      color: #fff;
+      padding: 5px;
+      display: flex;
+    }
+  }
+
+
+
   .m-leave-item {
     margin: 5px;
     background: #eee;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 
     .m-leave-tl {
-      background: #ff6600;
       color: #fff;
       padding: 5px;
       display: flex;
+    }
+
+    .m-leave-tl0 {
+      background: #666;
+    }
+    .m-leave-tl1 {
+      background: #ff6600;
     }
 
     .m-type {

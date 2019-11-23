@@ -30,13 +30,14 @@ class Conf extends React.Component {
     let name = get(user,'name','')
     let dept = get(user,'dept','')
     let posi = get(user,'position','')
+    let face = get(user,'face','')
 
 		return (
 			<div className='g-main'>
 
 			  <div className="m-hd">
 			  	<div className="m-face">
-						<img src="" alt=""/>
+						<img src={face} alt=""/>
 			  	</div>
 			  	<div className="m-hd-info">
 						<span className="m-name">{name}</span>

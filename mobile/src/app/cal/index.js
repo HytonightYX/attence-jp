@@ -43,6 +43,7 @@ class Cal extends React.Component {
       cardList: [],
       card: [],
       leave: [],
+      leavd: [],
 		}
 	}
 
@@ -59,10 +60,27 @@ class Cal extends React.Component {
     }
     this.setState({ loading_cal: true })
     let r = await this.props.calStore.getCardByMonth(params)
-    // console.log(r)
-    this.setState({ loading_cal: false, cardList: r.data.data})
+    this.calcLeaveDays(r.data.data.leaveList)
+    this.setState({ loading_cal: false, cardList: r.data.data.cardList, leaveList: r.data.data.leaveList})
 
     this.doDetail(null, date)
+  }
+
+  calcLeaveDays = (list)=>{
+    list.map((item,index)=>{
+      if (DT.moreThanDay(item.from,item.to)) {
+        item.type = 'd'
+      }else{
+        item.type = 'h'
+      }
+      item.day=[]
+      let _from = moment(item.from).date()
+      let _to = moment(item.to).date()
+      for(let i=_from;i<_to;i++) {
+        item.day.push(i)
+      }
+    })
+    // console.log('list..'+ list)
   }
 
   dateCellRender=(e)=>{
@@ -72,16 +90,40 @@ class Cal extends React.Component {
     if (month!==cur_month) return
 
     let date = e.date()
-    if (date > cur_date) return
+    // if (date > cur_date) return
 
-    let {cardList} = this.state
+    let {cardList, leaveList} = this.state
     if (cardList.length==0) return
-    let ret = <div className="m-card m-card-miss" onClick={this.doDetail.bind(this,null,e.date())}></div>
+    let ret, status
+
+    if (date <= cur_date) {
+      status = "miss"
+      ret = <div className="m-card m-card-miss" onClick={this.doDetail.bind(this,null,e.date())}></div>
+    }else{
+      status = "blank"
+      ret = <div className="m-card m-card-blank" onClick={this.doDetail.bind(this,null,e.date())}></div>
+    }
  
     for(let i=0;i<cardList.length;i++) {
       let d = parseInt(cardList[i].clock_date.toString().substr(6, 2))
       if ((date==d)&&(cardList[i].clock_status==2)) {
+        status= "ok"
         return <div className="m-card m-card-ok" onClick={this.doDetail.bind(this,cardList[i].id,e.date())}></div>
+      }
+    }
+
+    for(let i=0;i<leaveList.length;i++) {
+      for(let j=0;j<leaveList[i].day.length;j++) {
+        if ((leaveList[i].day[j]==date)&&(leaveList[i].type=='h')) {
+          // status += ' m-leave-hour'
+          if (status=="miss") {
+            return <div className="m-card m-card-miss m-leave-hour" onClick={this.doDetail.bind(this,cardList[i].id,e.date())}></div>
+          }else{
+            return <div className="m-card m-card-ok m-leave-hour" onClick={this.doDetail.bind(this,cardList[i].id,e.date())}></div>
+          }
+        }else if ((leaveList[i].day[j]==date)&&(leaveList[i].type=='d')) {
+          return <div className="m-card m-leave-day" onClick={this.doDetail.bind(this,cardList[i].id,e.date())}></div>
+        }
       }
     }
 
@@ -89,15 +131,19 @@ class Cal extends React.Component {
   }
 
   doDetail= async(id,day)=>{
-    // console.log('day...'+day)
     let year  = moment(new Date()).year()
     let month = moment(new Date()).month()+1
     let date  = parseInt(`${year}${month}${day}000000`)
 
     this.setState({ loading_del: true })
     let r = await this.props.calStore.getCardByDay({day:date, uid: this.props.userStore.currUser.id })
-    console.log(r)
-    this.setState({ loading_del: false, card: r.data.data.card, leave: r.data.data.leave})
+    // console.log(r)
+    this.setState({ 
+      loading_del: false, 
+      card: r.data.data.card, 
+      leave: r.data.data.leave,
+      leavd: r.data.data.leavd,
+    })
   }
 
   doSlide=()=>{
@@ -106,7 +152,7 @@ class Cal extends React.Component {
 
 
 	render() {
-    let { mini,card,leave } = this.state
+    let { mini,card,leave,leavd } = this.state
 
     let line = caluLine()
     let calanderCls = mini?`m-calendar m-mini m-mini-l${line}`:`m-calendar`
@@ -127,7 +173,7 @@ class Cal extends React.Component {
           <Skeleton active loading={this.state.loading_del}>
             <div className="m-info-card">
               {card.map((item,index)=>
-                <div className="m-card-item">
+                <div className="m-card-item" key={index}>
                   <div className="m-card-tl">
                     <label>お客様名: {item.company}</label>
                     <span>休憩時間: {item.rest_time}</span>
@@ -160,19 +206,37 @@ class Cal extends React.Component {
             </div>
 
             <div className="m-info-leave">
+              
               {leave.map((item,index)=>
-                <div className="m-leave-item">
-                  <div className="m-leave-tl">
+                <div className="m-leave-item" key={index}>
+                  <div className={`m-leave-tl m-leave-tl${item.status}`}>
                     <div className="m-type">{LEAVE_TYPE[item.type]}</div>
                     <div className="m-time">
                       {DT.formatLeaveTime(item.from)} - {DT.formatLeaveTime(item.to)}
                     </div>
-                    <div className="m-dur">{item.dur}</div>
+                    <div className="m-dur">
+                      {item.status==0 && <Tag color="red">待审批</Tag> }
+                      {item.status==1 && <Tag color="red">已通过</Tag> }
+                    </div>
                   </div>
                   <div className="m-reason">
                     {item.reason}
                   </div>
                   <div className="m-img"></div>
+                </div>
+                )}
+            </div>
+
+            <div className="m-info-leavd">
+              
+              {leavd.map((item,index)=>
+                <div className="m-leavd-item" key={index}>
+                  <div className={`m-leavd-tl`}>
+                    <div className="m-type">{LEAVE_TYPE[item.type]}</div>
+                    <div className="m-time">
+                      {DT.formatLeaveTime(item.from)} - {DT.formatLeaveTime(item.to)}
+                    </div>
+                  </div>
                 </div>
                 )}
             </div>
