@@ -71,15 +71,17 @@ class Cal extends React.Component {
       if (DT.moreThanDay(item.from,item.to)) {
         item.type = 'd'
         item.day=[]
-        let _from = moment(item.from).date()
-        let _to = moment(item.to).date()
+        let _from = moment(item.from.toString()).date()
+        let _to = moment(item.to.toString()).date()
         for(let i=_from;i<_to;i++) {
           item.day.push(i)
         }
       }else{
         item.type = 'h'
         item.day=[]
-        item.day.push(moment(item.from).date())
+        let a = item.from
+        let d = moment(a).date()
+        item.day.push(d)
       }
       
     })
@@ -160,6 +162,13 @@ class Cal extends React.Component {
 
     let line = caluLine()
     let calanderCls = mini?`m-calendar m-mini m-mini-l${line}`:`m-calendar`
+    let showCard = true
+
+    leavd.map((item,index)=>{
+      if (DT.moreThanDay(item.from,item.to)) {
+        showCard = false
+      }
+    })
 
 		return (
 			<div className='g-cal'>
@@ -173,41 +182,45 @@ class Cal extends React.Component {
             </div>
             </div>
           </Skeleton>
-
+          
+        
           <Skeleton active loading={this.state.loading_del}>
-            <div className="m-info-card">
-              {card.map((item,index)=>
-                <div className="m-card-item" key={index}>
-                  <div className="m-card-tl">
-                    <label>お客様名: {item.company}</label>
-                    <span>休憩時間: {item.rest_time}</span>
+            
+            {showCard &&
+              <div className="m-info-card">
+                {card.map((item,index)=>
+                  <div className="m-card-item" key={index}>
+                    <div className="m-card-tl">
+                      <label>お客様名: {item.company}</label>
+                      <span>休憩時間: {item.rest_time}</span>
+                    </div>
+                    <div className="m-card-time">
+                      <div className="m-mark"></div>
+                      <div className="m-line"></div>
+                      <label>
+                        <Icon type="clock-circle"/>
+                        {DT.formatCardTime(item.clock_in)}
+                      </label>
+                      <span>
+                        <Icon type="environment"/>
+                        {item.clock_in_loc}
+                      </span>
+                    </div>
+                    <div className="m-card-time">
+                      <div className="m-mark"></div>
+                      <label>
+                        <Icon type="clock-circle"/>
+                        {DT.formatCardTime(item.clock_out)}
+                      </label>
+                      <span>
+                        <Icon type="environment"/>
+                        {item.clock_out_loc}
+                      </span>
+                    </div>
                   </div>
-                  <div className="m-card-time">
-                    <div className="m-mark"></div>
-                    <div className="m-line"></div>
-                    <label>
-                      <Icon type="clock-circle"/>
-                      {DT.formatCardTime(item.clock_in)}
-                    </label>
-                    <span>
-                      <Icon type="environment"/>
-                      {item.clock_in_loc}
-                    </span>
-                  </div>
-                  <div className="m-card-time">
-                    <div className="m-mark"></div>
-                    <label>
-                      <Icon type="clock-circle"/>
-                      {DT.formatCardTime(item.clock_out)}
-                    </label>
-                    <span>
-                      <Icon type="environment"/>
-                      {item.clock_out_loc}
-                    </span>
-                  </div>
-                </div>
-                )}
-            </div>
+                  )}
+              </div> 
+            }
 
             <div className="m-info-leave">
               
@@ -246,9 +259,11 @@ class Cal extends React.Component {
             </div>
           </Skeleton>
 
-          <div className="m-submit">
-            <Button type="primary" icon="schedule" block>提交月报</Button>
-          </div>
+          <Skeleton active loading={this.state.loading_cal}>
+            <div className="m-submit">
+              <Button type="primary" icon="schedule" block>提交月报</Button>
+            </div>
+          </Skeleton>
         </div>
 			</div>
 		)

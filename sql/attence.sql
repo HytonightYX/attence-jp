@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 47.111.22.103
+ Source Server         : local
  Source Server Type    : MySQL
- Source Server Version : 50727
- Source Host           : 47.111.22.103:3306
+ Source Server Version : 50709
+ Source Host           : localhost:3306
  Source Schema         : attence
 
  Target Server Type    : MySQL
- Target Server Version : 50727
+ Target Server Version : 50709
  File Encoding         : 65001
 
- Date: 23/11/2019 21:23:18
+ Date: 24/11/2019 10:40:39
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,7 @@ CREATE TABLE `clock` (
   `clock_status` int(11) DEFAULT '0' COMMENT '打卡状态 0: 初始化 1:上班 2:下班 3:结束',
   `apdt` bigint(20) DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of clock
@@ -96,9 +96,10 @@ INSERT INTO `clock` VALUES (64, 40, 20191121000000, 20191121083400, '30.28736893
 INSERT INTO `clock` VALUES (65, 48, 20191121000000, 20191121081200, 'null', 'null', 'null', 20191121081200, 'null', 'null', 'null', '7', 'BIZPLUS', 0, 2, 20191121081054);
 INSERT INTO `clock` VALUES (66, 44, 20191121000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191121100317);
 INSERT INTO `clock` VALUES (67, 45, 20191122000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191122091457);
-INSERT INTO `clock` VALUES (69, 40, 20191123000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191123053735);
-INSERT INTO `clock` VALUES (72, 45, 20191122000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, NULL);
+INSERT INTO `clock` VALUES (69, 40, 20191123000000, 20191123020300, '30.533591476526997', '119.95919908091795', '中国 Zhejiang, Huzhou, Deqing, 兴康南路综合市场北侧', NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 20191123053735);
+INSERT INTO `clock` VALUES (72, 45, 20191122000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, NULL);
 INSERT INTO `clock` VALUES (73, 45, 20191123000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191123091306);
+INSERT INTO `clock` VALUES (74, 40, 20191124000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 20191124123510);
 COMMIT;
 
 -- ----------------------------
@@ -113,7 +114,7 @@ CREATE TABLE `clock_sche` (
   `rest` int(11) DEFAULT NULL,
   `comp` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of clock_sche
@@ -125,6 +126,7 @@ INSERT INTO `clock_sche` VALUES (3, 38, '08:50', '17:00', 4, 'HZNU');
 INSERT INTO `clock_sche` VALUES (6, 0, '09:00', '18:00', 6, 'BIZPLUS');
 INSERT INTO `clock_sche` VALUES (7, 1, '1111', '1111', 1, '1111');
 INSERT INTO `clock_sche` VALUES (8, 45, '09:30', '07:50', 5, '杭州师范大学');
+INSERT INTO `clock_sche` VALUES (9, 40, '09:00', '18:00', 6, 'BIZPLUS');
 COMMIT;
 
 -- ----------------------------
@@ -217,6 +219,37 @@ INSERT INTO `error` VALUES (2, 200, 'DATA_SUCC', '更新数据成功');
 COMMIT;
 
 -- ----------------------------
+-- Table structure for holiday
+-- ----------------------------
+DROP TABLE IF EXISTS `holiday`;
+CREATE TABLE `holiday` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) DEFAULT NULL COMMENT '假日名称',
+  `code` varchar(16) DEFAULT NULL COMMENT '节假日代码',
+  `date` varchar(8) DEFAULT NULL COMMENT '节假日开始日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of holiday
+-- ----------------------------
+BEGIN;
+INSERT INTO `holiday` VALUES (1, '元旦', '', '0101');
+INSERT INTO `holiday` VALUES (2, '成人之日	', NULL, '0111');
+INSERT INTO `holiday` VALUES (3, '建国纪念之日', NULL, '0211');
+INSERT INTO `holiday` VALUES (4, '天皇诞生日', NULL, '0222');
+INSERT INTO `holiday` VALUES (5, '春分之日', NULL, '0320');
+INSERT INTO `holiday` VALUES (6, '昭和之日', NULL, '0429');
+INSERT INTO `holiday` VALUES (7, '宪法纪念日', NULL, '0503');
+INSERT INTO `holiday` VALUES (8, '绿之日', NULL, '0504');
+INSERT INTO `holiday` VALUES (9, '儿童之日', NULL, '0505');
+INSERT INTO `holiday` VALUES (10, '海之日', NULL, '0715');
+INSERT INTO `holiday` VALUES (11, '山之日', NULL, '0811');
+INSERT INTO `holiday` VALUES (12, '敬老之日', NULL, '0916');
+INSERT INTO `holiday` VALUES (13, '秋分之日', NULL, NULL);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for leave
 -- ----------------------------
 DROP TABLE IF EXISTS `leave`;
@@ -234,16 +267,18 @@ CREATE TABLE `leave` (
   `audit_at` bigint(14) DEFAULT NULL COMMENT '审批时间',
   `audit_uid` int(11) DEFAULT NULL COMMENT '审批人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of leave
 -- ----------------------------
 BEGIN;
 INSERT INTO `leave` VALUES (12, 40, 2, '2019-11-17 20:17:00', '2019-11-17 23:17:00', '3小时', 'pp', NULL, 1, 20191117111747, 20191117111747, NULL);
-INSERT INTO `leave` VALUES (13, 40, 1, '2019-11-16 14:57:00', '2019-11-17 14:57:00', '1天(12小时)', 'aaaaa', NULL, 1, 20191114025722, 20191114025722, NULL);
+INSERT INTO `leave` VALUES (13, 40, 1, '2019-11-16 14:57:00', '2019-11-17 14:57:00', '1天(12小时)', 'aaaaa', NULL, 0, 20191114025722, 20191114025722, NULL);
 INSERT INTO `leave` VALUES (14, 40, 2, '2019-11-22 16:09:00', '2019-11-22 19:09:00', '3小时', 'bbb', NULL, 0, 20191122081003, 20191122081003, NULL);
-INSERT INTO `leave` VALUES (15, 40, 0, '2019-11-23 17:39:00', '2019-11-25 17:39:00', '3天(48小时)', '我就发哦', NULL, 1, 20191122053958, 20191123053958, NULL);
+INSERT INTO `leave` VALUES (15, 40, 0, '2019-11-24 17:39:00', '2019-11-26 17:39:00', '2天(48小时)', '我就发哦', NULL, 1, 20191122053958, 20191123053958, NULL);
+INSERT INTO `leave` VALUES (16, 40, 1, '2019-11-27 22:03:00', '2019-11-28 22:03:00', '2天(24小时)', '工作休息', NULL, 1, 20191123020433, NULL, NULL);
+INSERT INTO `leave` VALUES (17, 40, 2, '2019-11-23 22:05:00', '2019-11-23 23:05:00', '1小时', '很少', NULL, 1, 20191123020619, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -414,12 +449,16 @@ BEGIN
 	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
 	SET _day   = CONVERT(JSON_EXTRACT(data, '$.day'), UNSIGNED);
 	
-	select * from 
-		`leave` 
+	select id,uid,type,DATE_FORMAT(`from`,'%Y-%m-%d %T') as `from`, DATE_FORMAT(`to`,'%Y-%m-%d %T') as `to`,
+	dur,reason,status,create_at from `leave` 
 	where 
-		DATE_FORMAT(`from`,'%Y%m%d000000') <=_day and 
-		DATE_FORMAT(`to`,'%Y%m%d000000') > _day and 
-		uid = _uid;
+	  (DATE_FORMAT(`from`,'%Y%m%d000000') = DATE_FORMAT(`to`,'%Y%m%d000000') and 
+		 DATE_FORMAT(`from`,'%Y%m%d000000') = _day and uid = _uid and status=1) or 
+		(DATE_FORMAT(`to`,'%Y%m%d') > DATE_FORMAT(`from`,'%Y%m%d') and 
+		 DATE_FORMAT(`to`,'%Y%m%d000000') <> _day and 
+		 DATE_FORMAT(`from`,'%Y%m%d000000') <= _day and 
+		 DATE_FORMAT(`to`,'%Y%m%d000000') > _day and uid = _uid and status=1);
+
 	END
 ;;
 delimiter ;
@@ -438,7 +477,7 @@ BEGIN
 	SET _uid    = CONVERT(JSON_EXTRACT(data, '$.uid'), UNSIGNED);
 	SET _from   = CONVERT(JSON_EXTRACT(data, '$.from'), UNSIGNED);
 	SET _to     = CONVERT(JSON_EXTRACT(data, '$.to'), UNSIGNED);
-	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid;
+	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid and status = 0;
 	END
 ;;
 delimiter ;
@@ -462,6 +501,7 @@ BEGIN
 	
 	
 	select * from clock where uid = _uid and clock_date>_from and clock_date<_to;
+--   select id,uid,clock_date,clock_in,clock_out,rest_time,company,clock_type,
 	END
 ;;
 delimiter ;
@@ -483,7 +523,12 @@ BEGIN
 	SET _from   = CONVERT(JSON_EXTRACT(data, '$.from'), UNSIGNED);
 	SET _to     = CONVERT(JSON_EXTRACT(data, '$.to'), UNSIGNED);
 	
-	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid and status=1;
+	
+-- 	select * from `leave` where create_at>=_from and create_at<=_to and uid = _uid and status=1;
+	select id,uid,type, DATE_FORMAT(`from`,'%Y-%m-%d %T') as `from`, DATE_FORMAT(`to`,'%Y-%m-%d %T') as `to`,
+	dur,reason,status,create_at from `leave` where create_at>=_from and create_at<=_to and uid = _uid and status=1;
+	
+	
 	END
 ;;
 delimiter ;

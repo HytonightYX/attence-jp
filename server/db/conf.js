@@ -11,12 +11,24 @@
 // module.exports = conf;
 
 
+// let conf = {
+//   host:     '47.111.22.103',
+//   port:     3306,
+//   database: 'attence',
+//   user:     'admin',
+//   password: '12345qwert',
+//   multipleStatements: true,
+//   secret: 'attadmin',
+// };
+
+// module.exports = conf;
+
 let conf = {
-  host:     '47.111.22.103',
+  host:     'localhost',
   port:     3306,
   database: 'attence',
-  user:     'admin',
-  password: '12345qwert',
+  user:     'attence',
+  password: '12345',
   multipleStatements: true,
   secret: 'attadmin',
 };

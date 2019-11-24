@@ -56,10 +56,10 @@ export let durationDays = (from, to)=>{
 	let _to = moment(to)
 
 	// console.log(moment.duration(_to.diff(_from)))
-	let day = parseInt(moment.duration(_to.diff(_from)).asDays())+1
+	let day = parseInt(moment.duration(_to.diff(_from)).asDays())
 	let hour = parseInt(moment.duration(_to.diff(_from)).asHours())
 
-	return (day>1)?`${day}天(${hour}小时)`:`${hour}小时`
+	return (hour>=24)?`${day}天(${hour}小时)`:`${hour}小时`
 }
 
 export let now = () => {
